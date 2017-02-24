@@ -1,0 +1,28 @@
+.wrapper{
+  display: block;
+  text-align: center;
+}
+.scene{
+  display: inline-block;
+  text-align: center;
+  width: 1024px;
+  height: auto;
+}
+header{
+  width: 100%;
+  font-size: 28px;
+  display: inline-block;
+  text-align: center;
+}
+.content{
+  background-color: azure;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+.content-top{
+  display: inline-block;
+}
+.content-main{
+  height: 4000px;
+}
