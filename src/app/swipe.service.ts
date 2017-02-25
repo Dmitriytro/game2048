@@ -12,6 +12,7 @@ export class SwipeService {
     lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
     list = this._concatination(lines);
+    list = this._extention(list);
     return list;
   }
   swipeLeft(list: Array<number>): Array<number>{
@@ -21,15 +22,19 @@ export class SwipeService {
     lines = this._doubleNearby(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._concatination(lines);
+    list = this._extention(list);
     return list;
   }
   swipeDown(list: Array<number>): Array<number>{
     console.log('swipeDown');
     let lines = this._cutColumn(list);
     lines = this._nullFilter(lines);
+    lines = this._reverse(lines);
     lines = this._doubleNearby(lines);
+    lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
     list = this._remodel(lines);
+    list = this._extention(list);
     return list;
   }
   swipeUp(list: Array<number>): Array<number>{
@@ -39,6 +44,7 @@ export class SwipeService {
     lines = this._doubleNearby(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._remodel(lines);
+    list = this._extention(list);
     return list;
   }
   _cutRow(list: Array<number>): Array<Array<number>>{
@@ -141,6 +147,15 @@ export class SwipeService {
       newArrays.push(arr);
     }
     return this._concatination(newArrays);
+  }
+  _extention(array: Array<number>): Array<number>{
+    let nulls = [];
+    for(let i in array){
+      if(array[i]==null) nulls.push(i);
+    }
+    let numOfNull = nulls[Math.floor(Math.random()*nulls.length)];
+    array[numOfNull] = 2;
+    return array
   }
 
 }

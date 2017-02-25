@@ -3,6 +3,7 @@
   height: 100%;
   display: block;
   text-align: center;
+  background-color: aquamarine;
 }
 .number{
   font-size: 56px;
