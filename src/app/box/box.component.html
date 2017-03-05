@@ -1,8 +1,8 @@
 <div class="field" (keyup)="swipe(event.keyCode)">
   <div class="row" *ngFor="let row of rows; let i = index">
     <div class="column" *ngFor="let column of columns; let k = index">
-      <div class="spot" [@movementtigger]="state">
-        <app-spot [number]="sharedList[i*columns.length+k]"></app-spot>
+      <div class="spot">
+        <app-spot [number]="sharedList[i*columns.length+k]" [anim]="animationList[i*columns.length+k]"></app-spot>
       </div>
     </div>
   </div>
