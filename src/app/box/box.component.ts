@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { SwipeService } from "../swipe.service";
+import {AnimationService} from "../animation.service";
 
 @Component({
   selector: 'app-box',
@@ -25,7 +26,10 @@ export class BoxComponent implements OnInit {
     'null','null','null','null',
     'null','null','null','null'
   ];
-  constructor(private swipeService: SwipeService){}
+  constructor(
+    private swipeService: SwipeService,
+    private animationService: AnimationService
+  ){}
   ngOnInit() {
     this.generate();
   }
@@ -35,28 +39,36 @@ export class BoxComponent implements OnInit {
   _keyup(e): void{
     if(e.code == 'ArrowRight'){
       let newList = this.swipeService.swipeRight(this.sharedList);
-      this.animationList[3] = 'r3';
+      this.animationList = this.animationService.animationCountRight(newList,this.sharedList);
       //здесь устанавливаем анимацию при различных изменениях
       //нужен анализ каждых строк и огромная куча анимаций
       //найти решение для разделения и индификации каждого отдельного спота
       //тянуть анимацию до момента изменения и в конце сделать присвоение
-      this.sharedList = newList;
+      this.sharedList = this._extention(newList);
     }else if(e.code == 'ArrowLeft'){
       let newList = this.swipeService.swipeLeft(this.sharedList);
-      this.sharedList = newList;
+      this.sharedList = this._extention(newList);
     }else if(e.code == 'ArrowDown'){
       let newList = this.swipeService.swipeDown(this.sharedList);
-      this.sharedList = newList;
+      this.sharedList = this._extention(newList);
     }else if(e.code == 'ArrowUp'){
       let newList = this.swipeService.swipeUp(this.sharedList);
-      this.sharedList = newList;
+      this.sharedList = this._extention(newList);
     }
 
   }
   _keydown(e: Event): void{
     e.preventDefault();
   }
-
+  _extention(array: Array<number>): Array<number>{
+    let nulls = [];
+    for(let i in array){
+      if(array[i]==null) nulls.push(i);
+    }
+    let numOfNull = nulls[Math.floor(Math.random()*nulls.length)];
+    array[numOfNull] = 2;
+    return array
+  }
   /*
   Promise
   Promise созданны для организации асинхронного кода и  неявно используются в генераторах
