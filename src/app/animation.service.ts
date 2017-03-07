@@ -5,29 +5,52 @@ export class AnimationService {
 
   constructor() { }
   animationCountRight(newList: Array<number>,list: Array<number>): Array<string>{
-    let animationArr = [];
     let cuttedList = this._cutRow(list);
     let cuttedNewList = this._cutRow(newList);
-    let nullArrays = this._comperingRows(cuttedList,cuttedNewList);
+    let animationList = this._animationCompilation(cuttedList,cuttedNewList);
+    return ['']
+  }
+  _animationCompilation(list: Array<Array<number>>, newList: Array<Array<number>>): Array<number>{
+    let animationArr = [];
+    let nullArrays = this._comperingRows(list);
+    let nullNewArrays = this._comperingRows(newList);
+
     for (let k of [0,1,2,3]) {
       let animationLine = [];
+      let currentNulls = nullArrays[k];
+      let currentNewNulls = nullNewArrays[k];
+      let oldNulls = currentNulls;
+      let newNulls = currentNewNulls;
+      let doubledIndex = null;
+      let doubleCounter = 0;
+      let extend = 0;
+      if(oldNulls<newNulls){
+        let listWithoutNulls = this._cutNulls(list[k]);
+        let newListWithoutNulls = this._cutNulls(newList[k]);
+
+        for(let i of [0,1,2,3]) {
+          if(listWithoutNulls[i] !== newListWithoutNulls[i]) doubledIndex = i;
+        }
+      }
       for (let i of [0,1,2,3]) {
-        // cuttedNewList[k][i]
-        let currentNulls = nullArrays[k]; //сколько null стало
-        if (cuttedList[k][i] !== null){ //если здесь не null, значит надо лететь на к-во нулл
-          animationLine.push(currentNulls); //вписываем колличество перелетаемых клеток, по кол-ву null
+        if (list[k][i] !== null){
+          if(doubleCounter == doubledIndex) extend = 1;
+          animationLine.push(currentNewNulls+extend);
+          if(extend == 1) extend = 0;
+          doubleCounter++
         } else{
           animationLine.push(0);
-          currentNulls--; //или вычитаем нулл
-          // нужно понять что пистаь, сколько было null или стало?
-          // последнее не может лететь.
-          // оно объединяется
         }
+        currentNewNulls>0 ? currentNewNulls-- : currentNewNulls = 0;
       }
       animationArr = animationArr.concat(animationLine)
     }
     console.log(animationArr);
-    return ['']
+    return animationArr
+  }
+  _cutNulls(list: Array<number>): Array<number>{
+    let newList = list.filter(elem => elem !== null);
+    return newList
   }
   _cutRow(list: Array<number>): Array<Array<number>>{
     let newArr = [];
@@ -37,7 +60,7 @@ export class AnimationService {
     newArr.push(list.slice(12));
     return newArr
   }
-  _comperingRows(newList: Array<Array<number>>,list:Array<Array<number>>): Array<number>{
+  _comperingRows(newList: Array<Array<number>>): Array<number>{
     let arrayOfNum = [];
     for(let k of [0,1,2,3]) {
       let newListNull = 0;
@@ -48,5 +71,4 @@ export class AnimationService {
     }
     return arrayOfNum
   }
-  _nullsCount(){}
 }
