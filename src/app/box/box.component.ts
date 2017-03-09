@@ -15,10 +15,10 @@ export class BoxComponent implements OnInit {
   rows = [0,1,2,3];
   columns = [0,1,2,3];
   sharedList = [
-    4,4,4,4,
-    4,4,null,null,
-    null,4,4,null,
-    null,null,4,4
+    4,4,8,8,
+    4,8,4,4,
+    4,4,4,null,
+    null,4,4,4
   ];
   animationList = [
     'null','null','null','null',

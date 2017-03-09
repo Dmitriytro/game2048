@@ -10,8 +10,8 @@ export class SwipeService {
     let animationArr = this._cutRow(animation);
     let lines = this._cutRowReverse(list);
     animationArr = this._countionFA(animationArr);
-    animationArr = this._countionSA(animationArr,lines.slice());
-    console.log(animationArr);
+    animationArr = this._countionSA(animationArr,lines);
+    animationArr.forEach((elem)=>console.log(elem));
     lines = this._doubleNearby(lines);
     lines = this._nullFilter(lines);
     lines = this._reverse(lines);
@@ -97,21 +97,29 @@ export class SwipeService {
     return newArrays
   }
   _countionSA(aniArrays: Array<Array<number>>,listArr: Array<Array<number>>): Array<Array<number>>{
-    // aniArrays[3] здесь анимационно-цифровой список
-    // listArr[3] наш лист с реверсом
     let newArrays = [];
     for(let i of [0,1,2,3]){
-      let currentLine = listArr[i].reverse();
-      aniArrays[i].forEach((elem,idx,arr)=>{
-        if(currentLine[idx] !== null){
-          if(currentLine[idx] == currentLine[+idx+1] && currentLine[+idx+1] || currentLine[+idx+2]) {
-          currentLine[+idx+1] = null;
+      let currentLine = listArr[i].slice(); //реверс основной линии
+      let result = aniArrays[i].reverse();
+      let pass = false;
+      result.forEach((elem,idx,arr)=>{ //передираем анимационный реверс
+        if(!pass){
+          if(currentLine[idx] !== null){ //если первый элеммент пустой, пропускаем
+            if(currentLine[idx] == currentLine[+idx+1]){  //если есть совпадение
+              let left = currentLine.length-1-idx; //прибавить всем впереди
+              for(let j = 0;j<left;j++){
+                if(currentLine[+idx+1+j] !== null){ //если не пустая клетка, то прибавляем в анимацию
+                  arr[+idx+1+j] = arr[+idx+1+j]+1;
+                }
+              }
+              pass = true;
+            }
           }
-          arr[idx]++;
+        } else {
+          pass = false;
         }
       });
-      newArrays.push(aniArrays[i]);
-      //нужно записать исключение!!! на 4х4
+      newArrays.push(result.reverse()); //результат этого блока: просчетать дополнительные шаги при слияние
     }
     return newArrays
   }
@@ -144,7 +152,6 @@ export class SwipeService {
   }
   _checkNearby(arr: Array<number>): Array<number>{
     let newArr = [];
-    // arr реверсиооные строки
     for (let i in arr){
       if (arr[i] !== null){ //если не нулл
         if (arr[i] == arr[+i+1]){ //и она равна следующей цифре
