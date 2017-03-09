@@ -5,10 +5,22 @@ export class SwipeService {
 
   constructor() { }
   swipeRight(list: Array<number>): Array<number>{
-    console.log('swipeRight');
+    // console.log('swipeRight');
+    //Параллельно сделаем создание анимации
+    let animation = list.slice();
+    let animationArr = this._cutRow(animation);
     let lines = this._cutRowReverse(list);
+    let nullsArr = this._nullCounter(lines);
+    animationArr = this._countionFA(animationArr,nullsArr);
+
+    // console.log(animationArr[0]);
+    // console.log(animationArr[1]);
+    ///////////////////////////////////////
     lines = this._nullFilter(lines);
     lines = this._doubleNearby(lines);
+    animationArr = this._countionSA(animationArr,lines.slice());
+    console.log(animationArr);
+    lines = this._nullFilter(lines);
     lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
     list = this._concatination(lines);
@@ -19,6 +31,7 @@ export class SwipeService {
     let lines = this._cutRow(list);
     lines = this._nullFilter(lines);
     lines = this._doubleNearby(lines);
+    lines = this._nullFilter(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._concatination(lines);
     return list;
@@ -29,6 +42,7 @@ export class SwipeService {
     lines = this._nullFilter(lines);
     lines = this._reverse(lines);
     lines = this._doubleNearby(lines);
+    lines = this._nullFilter(lines);
     lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
     list = this._remodel(lines);
@@ -39,6 +53,7 @@ export class SwipeService {
     let lines = this._cutColumn(list);
     lines = this._nullFilter(lines);
     lines = this._doubleNearby(lines);
+    lines = this._nullFilter(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._remodel(lines);
     return list;
@@ -70,6 +85,50 @@ export class SwipeService {
     }
     return newArrays
   }
+  _countionFA(arrays: Array<Array<number>>,nulls: Array<any>): Array<Array<number>>{
+    let newArrays = [];
+    for(let array of arrays){
+      let newA = [];
+      array.forEach((elem,i)=>{
+        if(elem == null) newA[i] = null;
+        else newA[i] = nulls[newArrays.length]
+      });
+      newArrays.push(newA);
+    }
+    return newArrays
+  }
+  _countionSA(arrays: Array<Array<number>>,arrayWithNulls: Array<Array<number>>): Array<Array<number>>{
+    let newArrays = [];
+    let plusOneArrs = [];
+    arrayWithNulls.forEach((elem)=>{
+      let plusOne = [];
+      elem.reverse().forEach((elem,i)=>{
+        if(elem == null) plusOne.push(i);
+      });
+      plusOneArrs.push(plusOne);
+    });
+    for(let i of [0,1,2,3]){
+      let plusOne = plusOneArrs[i];
+      let array = arrays[i];
+      array.forEach((elem,i) => {
+        console.log(elem);
+        if(plusOne == i) elem++;
+      });
+      newArrays.push(array);
+    }
+    return newArrays
+  }
+  _nullCounter(arrays: Array<Array<number>>): Array<Array<number>>{
+    let newArrays = [];
+    for(let array of arrays){
+      let nulls = 0;
+      array.forEach((elem) => {
+        if(elem == null) nulls++
+      });
+      newArrays.push(nulls);
+    }
+    return newArrays
+  }
   _nullFilter(arrays: Array<Array<number>>): Array<Array<number>>{
     let newArrays = [];
     for(let array of arrays){
@@ -89,14 +148,14 @@ export class SwipeService {
   _checkNearby(arr: Array<number>): Array<number>{
     let newArr = [];
     for (let i in arr){
-      if (arr[i] !== null){
-        if (arr[i] == arr[+i+1]){
-          newArr.push(arr[i]*2);
-          arr[+i+1] = null;
+      if (arr[i] !== null){ //если не нулл
+        if (arr[i] == arr[+i+1]){ //и она равна следующей цифре
+          newArr.push(arr[i]*2); //составляем новый массив, перемножая на два
+          arr[+i+1] = null; //следующая равна нулл
         }else {
-          newArr.push(arr[i]);
+          newArr.push(arr[i]); //не равна следующей
         }
-      }
+      }else newArr.push(null)
     }
     return newArr
   }

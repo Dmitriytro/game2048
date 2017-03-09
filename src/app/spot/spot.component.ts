@@ -24,6 +24,5 @@ export class SpotComponent implements OnChanges {
   constructor() { }
   ngOnChanges(): void{
     this.state = this.anim;
-    console.log(this.state)
   }
 }

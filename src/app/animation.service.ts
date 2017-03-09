@@ -24,14 +24,19 @@ export class AnimationService {
       let doubledIndex = null;
       let doubleCounter = 0;
       let extend = 0;
+
       if(oldNulls<newNulls){
         let listWithoutNulls = this._cutNulls(list[k]);
         let newListWithoutNulls = this._cutNulls(newList[k]);
-
-        for(let i of [0,1,2,3]) {
-          if(listWithoutNulls[i] !== newListWithoutNulls[i]) doubledIndex = i;
+        // если появился null
+        if(list[k][3] !== newList[k][3]) { //если последние не объядинились
+          if (list[k][0] == newList[k][3]) {
+            
+          }
         }
+         
       }
+
       for (let i of [0,1,2,3]) {
         if (list[k][i] !== null){
           if(doubleCounter == doubledIndex) extend = 1;
@@ -45,7 +50,6 @@ export class AnimationService {
       }
       animationArr = animationArr.concat(animationLine)
     }
-    console.log(animationArr);
     return animationArr
   }
   _cutNulls(list: Array<number>): Array<number>{
