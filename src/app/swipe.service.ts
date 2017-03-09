@@ -6,20 +6,13 @@ export class SwipeService {
   constructor() { }
   swipeRight(list: Array<number>): Array<number>{
     // console.log('swipeRight');
-    //Параллельно сделаем создание анимации
     let animation = list.slice();
     let animationArr = this._cutRow(animation);
     let lines = this._cutRowReverse(list);
-    let nullsArr = this._nullCounter(lines);
-    animationArr = this._countionFA(animationArr,nullsArr);
-
-    // console.log(animationArr[0]);
-    // console.log(animationArr[1]);
-    ///////////////////////////////////////
-    lines = this._nullFilter(lines);
-    lines = this._doubleNearby(lines);
+    animationArr = this._countionFA(animationArr);
     animationArr = this._countionSA(animationArr,lines.slice());
     console.log(animationArr);
+    lines = this._doubleNearby(lines);
     lines = this._nullFilter(lines);
     lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
@@ -85,36 +78,40 @@ export class SwipeService {
     }
     return newArrays
   }
-  _countionFA(arrays: Array<Array<number>>,nulls: Array<any>): Array<Array<number>>{
+  _countionFA(arrays: Array<Array<number>>): Array<Array<number>>{
     let newArrays = [];
     for(let array of arrays){
+      array = array.reverse();
       let newA = [];
+      let numCounter = 0;
       array.forEach((elem,i)=>{
         if(elem == null) newA[i] = null;
-        else newA[i] = nulls[newArrays.length]
+        else {
+          newA[i] = i-numCounter;
+          numCounter++;
+        }
       });
-      newArrays.push(newA);
+      newArrays.push(newA.reverse());
     }
+
     return newArrays
   }
-  _countionSA(arrays: Array<Array<number>>,arrayWithNulls: Array<Array<number>>): Array<Array<number>>{
+  _countionSA(aniArrays: Array<Array<number>>,listArr: Array<Array<number>>): Array<Array<number>>{
+    // aniArrays[3] здесь анимационно-цифровой список
+    // listArr[3] наш лист с реверсом
     let newArrays = [];
-    let plusOneArrs = [];
-    arrayWithNulls.forEach((elem)=>{
-      let plusOne = [];
-      elem.reverse().forEach((elem,i)=>{
-        if(elem == null) plusOne.push(i);
-      });
-      plusOneArrs.push(plusOne);
-    });
     for(let i of [0,1,2,3]){
-      let plusOne = plusOneArrs[i];
-      let array = arrays[i];
-      array.forEach((elem,i) => {
-        console.log(elem);
-        if(plusOne == i) elem++;
+      let currentLine = listArr[i].reverse();
+      aniArrays[i].forEach((elem,idx,arr)=>{
+        if(currentLine[idx] !== null){
+          if(currentLine[idx] == currentLine[+idx+1] && currentLine[+idx+1] || currentLine[+idx+2]) {
+          currentLine[+idx+1] = null;
+          }
+          arr[idx]++;
+        }
       });
-      newArrays.push(array);
+      newArrays.push(aniArrays[i]);
+      //нужно записать исключение!!! на 4х4
     }
     return newArrays
   }
@@ -147,6 +144,7 @@ export class SwipeService {
   }
   _checkNearby(arr: Array<number>): Array<number>{
     let newArr = [];
+    // arr реверсиооные строки
     for (let i in arr){
       if (arr[i] !== null){ //если не нулл
         if (arr[i] == arr[+i+1]){ //и она равна следующей цифре
@@ -155,7 +153,7 @@ export class SwipeService {
         }else {
           newArr.push(arr[i]); //не равна следующей
         }
-      }else newArr.push(null)
+      }else newArr.push(null);
     }
     return newArr
   }
