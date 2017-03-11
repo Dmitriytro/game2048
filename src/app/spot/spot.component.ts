@@ -38,7 +38,7 @@ export class SpotComponent implements OnChanges {
   state: String = 'null';
   constructor() { }
   ngOnChanges(): void{
-    if(this.anim != null) this.time = +this.anim.split('')[1]*100;
+    if(this.anim) this.time = +this.anim.split('')[1]*100;
     this.state = this.anim;
     setTimeout(()=>{this.state = 'null'},this.time);
   }
