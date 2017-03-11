@@ -15,10 +15,10 @@ export class BoxComponent implements OnInit {
   rows = [0,1,2,3];
   columns = [0,1,2,3];
   sharedList = [
-    4,4,8,8,
-    4,8,4,4,
-    4,4,4,null,
-    null,4,4,4
+    4,4,null,null,
+    null,4,null,4,
+    4,null,null,4,
+    null,null,4,4
   ];
   animationList = [
     'null','null','null','null',
@@ -38,13 +38,13 @@ export class BoxComponent implements OnInit {
   }
   _keyup(e): void{
     if(e.code == 'ArrowRight'){
-      let newList = this.swipeService.swipeRight(this.sharedList);
-      this.animationList = this.animationService.animationCountRight(newList,this.sharedList);
-      //здесь устанавливаем анимацию при различных изменениях
-      //нужен анализ каждых строк и огромная куча анимаций
-      //найти решение для разделения и индификации каждого отдельного спота
-      //тянуть анимацию до момента изменения и в конце сделать присвоение
-      this.sharedList = this._extention(newList);
+      let result = this.swipeService.swipeRight(this.sharedList);
+      this.animationList = result[1];
+      setTimeout(
+        ()=>{
+          this.sharedList = this._extention(result[0]);
+        },300
+      );
     }else if(e.code == 'ArrowLeft'){
       let newList = this.swipeService.swipeLeft(this.sharedList);
       this.sharedList = this._extention(newList);

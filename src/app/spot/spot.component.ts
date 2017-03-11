@@ -7,22 +7,39 @@ import { Component, OnChanges, Input, trigger, state, animate, style, transition
   animations: [
     trigger('movementtigger',[
       state('null',style({transform: 'translateX(0px)'})),
-      state('r3',style({transform: 'translateX(120px)'})),
+      state('r3',style({transform: 'translateX(360px)'})),
+      state('r2',style({transform: 'translateX(240px)'})),
+      state('r1',style({transform: 'translateX(120px)'})),
       transition('null => r3',[
-        animate('1000ms ease-in')
+        animate('300ms ease-in')
+      ]),
+      transition('null => r2',[
+        animate('200ms ease-in')
+      ]),
+      transition('null => r1',[
+        animate('100ms ease-in')
       ]),
       transition('r3 => null',[
-        animate('1000ms ease-out')
+        animate('0ms ease-out')
+      ]),
+      transition('r2 => null',[
+        animate('0ms ease-out')
+      ]),
+      transition('r1 => null',[
+        animate('0ms ease-out')
       ])
     ])
   ]
 })
 export class SpotComponent implements OnChanges {
-  @Input() number: Number;
-  @Input() anim: String;
+  @Input() number: number;
+  @Input() anim: string;
+  time: number;
   state: String = 'null';
   constructor() { }
   ngOnChanges(): void{
+    if(this.anim != null) this.time = +this.anim.split('')[1]*100;
     this.state = this.anim;
+    setTimeout(()=>{this.state = 'null'},this.time);
   }
 }

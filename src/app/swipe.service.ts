@@ -4,20 +4,20 @@ import { Injectable } from '@angular/core';
 export class SwipeService {
 
   constructor() { }
-  swipeRight(list: Array<number>): Array<number>{
-    // console.log('swipeRight');
+  swipeRight(list: Array<number>): Array<Array<any>>{
     let animation = list.slice();
     let animationArr = this._cutRow(animation);
     let lines = this._cutRowReverse(list);
     animationArr = this._countionFA(animationArr);
     animationArr = this._countionSA(animationArr,lines);
-    animationArr.forEach((elem)=>console.log(elem));
     lines = this._doubleNearby(lines);
     lines = this._nullFilter(lines);
     lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
     list = this._concatination(lines);
-    return list;
+    let animationList = this._concatination(animationArr);
+    let animationListStr = this._animationRemodel(animationList,'swipeRight');
+    return [list,animationListStr];
   }
   swipeLeft(list: Array<number>): Array<number>{
     console.log('swipeLeft');
@@ -105,32 +105,39 @@ export class SwipeService {
       result.forEach((elem,idx,arr)=>{ //передираем анимационный реверс
         if(!pass){
           if(currentLine[idx] !== null){ //если первый элеммент пустой, пропускаем
-            if(currentLine[idx] == currentLine[+idx+1]){  //если есть совпадение
+            if(
+              (currentLine[idx] == currentLine[+idx+1]) ||
+              (currentLine[idx] == currentLine[+idx+2] && currentLine[+idx+1] == null) ||
+              (currentLine[idx] == currentLine[+idx+3] && currentLine[+idx+1] == null && currentLine[+idx+2] == null)
+            ){
               let left = currentLine.length-1-idx; //прибавить всем впереди
               for(let j = 0;j<left;j++){
                 if(currentLine[+idx+1+j] !== null){ //если не пустая клетка, то прибавляем в анимацию
-                  arr[+idx+1+j] = arr[+idx+1+j]+1;
+                  arr[+idx+1+j]++;
                 }
               }
               pass = true;
             }
           }
         } else {
-          pass = false;
+          if(currentLine[idx] !== null) pass = false;
         }
       });
       newArrays.push(result.reverse()); //результат этого блока: просчетать дополнительные шаги при слияние
     }
     return newArrays
   }
-  _nullCounter(arrays: Array<Array<number>>): Array<Array<number>>{
+  _animationRemodel(array: Array<number>,kind: string): Array<string>{
     let newArrays = [];
-    for(let array of arrays){
-      let nulls = 0;
-      array.forEach((elem) => {
-        if(elem == null) nulls++
-      });
-      newArrays.push(nulls);
+    let extension: any;
+    if(kind == 'swipeRight') extension = 'r';
+    else if(kind == 'swipeLeft') extension = 'l';
+    for(let elem of array){
+      if(elem!==null){
+        if(elem == 0) elem = null;
+        else elem = extension+elem;
+      }
+      newArrays.push(elem);
     }
     return newArrays
   }
@@ -157,6 +164,12 @@ export class SwipeService {
         if (arr[i] == arr[+i+1]){ //и она равна следующей цифре
           newArr.push(arr[i]*2); //составляем новый массив, перемножая на два
           arr[+i+1] = null; //следующая равна нулл
+        }else if(arr[+i+1] == null && arr[i] == arr[+i+2]){
+          newArr.push(arr[i]*2);
+          arr[+i+2] = null;
+        }else if(arr[+i+1] == null && arr[+i+2] == null && arr[i] == arr[+i+3]){
+          newArr.push(arr[i]*2);
+          arr[+i+3] = null;
         }else {
           newArr.push(arr[i]); //не равна следующей
         }
