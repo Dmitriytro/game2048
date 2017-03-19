@@ -15,7 +15,7 @@ export class BoxComponent implements OnInit {
   rows = [0,1,2,3];
   columns = [0,1,2,3];
   sharedList = [
-    4,4,null,null,
+    4,null,null,null,
     null,4,null,4,
     4,null,null,4,
     null,null,4,4

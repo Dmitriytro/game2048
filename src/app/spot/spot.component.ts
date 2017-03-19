@@ -64,10 +64,11 @@ export class SpotComponent implements OnChanges {
     if(this.anim) {
       setTimeout(()=>{
         this.render = this.number;
+        this.state = 'null'
       },this.time);
       this.state = this.anim;
     }
-    if(this.compaction !== 'null'){
+    if(this.compaction !== 'null' && this.compaction !== 1){
       setTimeout(()=>{
         this.state2 = 'compaction';
         this.render = this.number;
@@ -75,6 +76,8 @@ export class SpotComponent implements OnChanges {
           this.state2 = 'null';
         },1);
       },this.time);
+    } else if(this.compaction == 1){
+      setTimeout(()=>{this.render = this.number},this.time);
     }
   }
 }
