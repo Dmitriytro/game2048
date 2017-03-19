@@ -26,6 +26,12 @@ export class BoxComponent implements OnInit {
     'null','null','null','null',
     'null','null','null','null'
   ];
+  compactionList = [
+    'null','null','null','null',
+    'null','null','null','null',
+    'null','null','null','null',
+    'null','null','null','null'
+  ];
   constructor(
     private swipeService: SwipeService,
     private animationService: AnimationService
@@ -40,6 +46,7 @@ export class BoxComponent implements OnInit {
     if(e.code == 'ArrowRight'){
       let result = this.swipeService.swipeRight(this.sharedList);
       this.animationList = result[1];
+      this.compactionList = result[2];
       this.sharedList = this._extention(result[0]);
     }else if(e.code == 'ArrowLeft'){
       let newList = this.swipeService.swipeLeft(this.sharedList);

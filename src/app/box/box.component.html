@@ -2,7 +2,9 @@
   <div class="row" *ngFor="let row of rows; let i = index">
     <div class="column" *ngFor="let column of columns; let k = index">
       <div class="spot">
-        <app-spot [number]="sharedList[i*columns.length+k]" [anim]="animationList[i*columns.length+k]"></app-spot>
+        <app-spot [number]="sharedList[i*columns.length+k]"
+                  [anim]="animationList[i*columns.length+k]"
+                  [compaction]="compactionList[i*columns.length+k]"></app-spot>
       </div>
     </div>
   </div>

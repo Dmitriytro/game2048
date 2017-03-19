@@ -10,14 +10,16 @@ export class SwipeService {
     let lines = this._cutRowReverse(list);
     animationArr = this._countionFA(animationArr);
     animationArr = this._countionSA(animationArr,lines);
+    let compactionArr = this._countionCompaction(animationArr);
     lines = this._doubleNearby(lines);
     lines = this._nullFilter(lines);
     lines = this._reverse(lines);
     lines = this._fillMissingUp(lines,'swipeRight');
     list = this._concatination(lines);
+    let compactionList = this._concatination(compactionArr);
     let animationList = this._concatination(animationArr);
     let animationListStr = this._animationRemodel(animationList,'swipeRight');
-    return [list,animationListStr];
+    return [list,animationListStr,compactionList];
   }
   swipeLeft(list: Array<number>): Array<number>{
     console.log('swipeLeft');
@@ -125,6 +127,20 @@ export class SwipeService {
       });
       newArrays.push(result.reverse()); //результат этого блока: просчетать дополнительные шаги при слияние
     }
+    return newArrays
+  }
+  _countionCompaction(aniArrays: Array<Array<number>>): Array<Array<any>>{
+    let newArrays = [];
+    aniArrays.forEach((arr)=>{
+      let concatArr = [null,null,null,null];
+      arr.forEach((elem,i)=>{
+        if((elem ^ 0) === elem) {
+          if(concatArr[elem+i] === null) concatArr[elem+i] = 1;
+          else if(concatArr[elem+i] === 1) concatArr[elem+i] = true;
+        }
+      });
+      newArrays.push(concatArr);
+    });
     return newArrays
   }
   _animationRemodel(array: Array<number>,kind: string): Array<string>{
