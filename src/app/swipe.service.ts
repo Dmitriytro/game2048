@@ -5,53 +5,74 @@ export class SwipeService {
 
   constructor() { }
   swipeRight(list: Array<number>): Array<Array<any>>{
-    let animation = list.slice();
-    let animationArr = this._cutRow(animation);
-    let lines = this._cutRowReverse(list);
-    animationArr = this._countionFA(animationArr);
-    animationArr = this._countionSA(animationArr,lines);
-    let compactionArr = this._countionCompaction(animationArr);
-    lines = this._doubleNearby(lines);
-    lines = this._nullFilter(lines);
-    lines = this._reverse(lines);
-    lines = this._fillMissingUp(lines,'swipeRight');
-    list = this._concatination(lines);
-    let compactionList = this._concatination(compactionArr);
-    let animationList = this._concatination(animationArr);
-    let animationListStr = this._animationRemodel(animationList,'swipeRight');
-    return [list,animationListStr,compactionList];
+    let animation = list.slice(); //copy list to animation
+    let animationArr = this._cutRow(animation); // cut animation to lines
+    let lines = this._cutRowReverse(list); //and cut list, with reverse
+    animationArr = this._countionFA(animationArr,'swipeRight'); //fill fly-way up
+    animationArr = this._countionSA(animationArr,lines,'swipeRight'); //plus extra merge way
+    let mergeArr = this._countionMerge(animationArr,'swipeRight'); //founding merge places
+    lines = this._doubleNearby(lines); //lines doubling
+    lines = this._nullFilter(lines); //cut nulls
+    lines = this._reverse(lines); //reverse
+    lines = this._fillMissingUp(lines,'swipeRight'); //filling to 4
+    list = this._concatination(lines); //transformed to list
+    let mergeList = this._concatination(mergeArr); //to merge list
+    let animationList = this._concatination(animationArr); //to anim list
+    let animationListStr = this._animationRemodel(animationList,'swipeRight'); //to string triggers
+    return [list,animationListStr,mergeList];
   }
-  swipeLeft(list: Array<number>): Array<number>{
-    console.log('swipeLeft');
-    let lines = this._cutRow(list);
+  swipeLeft(list: Array<number>): Array<Array<any>>{
+    let animation = list.slice(); //copy list to animation
+    let animationArr = this._cutRow(animation); // cut animation to lines
+    let lines = this._cutRow(list); //and cut list
+    animationArr = this._countionFA(animationArr,'swipeLeft'); //fill fly-way up
+    animationArr = this._countionSA(animationArr,lines,'swipeLeft'); //plus extra merge way
+    let mergeArr = this._countionMerge(animationArr,'swipeLeft'); //founding merge places
     lines = this._nullFilter(lines);
     lines = this._doubleNearby(lines);
     lines = this._nullFilter(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._concatination(lines);
-    return list;
+    let mergeList = this._concatination(mergeArr); //to merge list
+    let animationList = this._concatination(animationArr); //to anim list
+    let animationListStr = this._animationRemodel(animationList,'swipeLeft'); //to string triggers
+    return [list,animationListStr,mergeList];
   }
-  swipeDown(list: Array<number>): Array<number>{
-    console.log('swipeDown');
-    let lines = this._cutColumn(list);
-    lines = this._nullFilter(lines);
+  swipeDown(list: Array<number>): Array<Array<any>>{
+    let animation = list.slice(); //copy list to animation
+    let animationArr = this._cutColumn(animation); // cut animation to lines
+    let lines = this._cutColumn(list); // cut column
+    animationArr = this._countionFA(animationArr,'swipeRight'); //fill fly-way up
+    animationArr = this._countionSA(animationArr,lines,'swipeRight'); //plus extra merge way
+    let mergeArr = this._countionMerge(animationArr,'swipeRight'); //founding merge places
+    lines = this._nullFilter(lines); //cut nulls
     lines = this._reverse(lines);
-    lines = this._doubleNearby(lines);
-    lines = this._nullFilter(lines);
-    lines = this._reverse(lines);
-    lines = this._fillMissingUp(lines,'swipeRight');
-    list = this._remodel(lines);
-    return list;
+    lines = this._doubleNearby(lines); //lines doubling
+    lines = this._nullFilter(lines); //cut nulls
+    lines = this._reverse(lines); //reverse
+    lines = this._fillMissingUp(lines,'swipeRight'); //filling to 4
+    list = this._remodel(lines);  //transformed to list
+    let mergeList = this._concatination(mergeArr); //to merge list
+    let animationList = this._concatination(animationArr); //to anim list
+    let animationListStr = this._animationRemodel(animationList,'swipeDown'); //to string triggers
+    return [list,animationListStr,mergeList];
   }
-  swipeUp(list: Array<number>): Array<number>{
-    console.log('swipeUp');
-    let lines = this._cutColumn(list);
+  swipeUp(list: Array<number>): Array<Array<any>>{
+    let animation = list.slice(); //copy list to animation
+    let animationArr = this._cutColumn(animation); // cut animation to lines
+    let lines = this._cutColumn(list); //and cut list
+    animationArr = this._countionFA(animationArr,'swipeLeft'); //fill fly-way up
+    animationArr = this._countionSA(animationArr,lines,'swipeLeft'); //plus extra merge way
+    let mergeArr = this._countionMerge(animationArr,'swipeLeft'); //founding merge places
     lines = this._nullFilter(lines);
     lines = this._doubleNearby(lines);
     lines = this._nullFilter(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._remodel(lines);
-    return list;
+    let mergeList = this._concatination(mergeArr); //to merge list
+    let animationList = this._concatination(animationArr); //to anim list
+    let animationListStr = this._animationRemodel(animationList,'swipeUp'); //to string triggers
+    return [list,animationListStr,mergeList];
   }
   _cutRow(list: Array<number>): Array<Array<number>>{
     let newArr = [];
@@ -80,63 +101,74 @@ export class SwipeService {
     }
     return newArrays
   }
-  _countionFA(arrays: Array<Array<number>>): Array<Array<number>>{
+  _countionFA(arrays: Array<Array<number>>,direction: String): Array<Array<number>>{
     let newArrays = [];
     for(let array of arrays){
-      array = array.reverse();
-      let newA = [];
-      let numCounter = 0;
+      if(direction == 'swipeRight') array = array.reverse();
+      //reversing all the lines
+      let newA = []; // new empty arr
+      let numCounter = 0; // filled spots
       array.forEach((elem,i)=>{
+        //if elem is empty, we need to put it in new arr
         if(elem == null) newA[i] = null;
         else {
+          //else fly all the way down without filled spots
           newA[i] = i-numCounter;
           numCounter++;
         }
       });
-      newArrays.push(newA.reverse());
+      if(direction == 'swipeRight') newArrays.push(newA.reverse()); // return new animation arr with reverse lines back
+      else newArrays.push(newA);
     }
-
     return newArrays
   }
-  _countionSA(aniArrays: Array<Array<number>>,listArr: Array<Array<number>>): Array<Array<number>>{
+  _countionSA(aniArrays: Array<Array<number>>,listArr: Array<Array<number>>,direction: String): Array<Array<number>>{
     let newArrays = [];
-    for(let i of [0,1,2,3]){
-      let currentLine = listArr[i].slice(); //реверс основной линии
-      let result = aniArrays[i].reverse();
-      let pass = false;
-      result.forEach((elem,idx,arr)=>{ //передираем анимационный реверс
-        if(!pass){
-          if(currentLine[idx] !== null){ //если первый элеммент пустой, пропускаем
+    for(let i in aniArrays){
+      let currentLine = listArr[i].slice(); //copy each line
+      let result = aniArrays[i];
+      if(direction == 'swipeRight') result = result.reverse();
+      let pass = false; //trigger
+      result.forEach((elem,idx,arr)=>{ //looking for the same values
+        if(!pass){ //if trigger is off
+          if(currentLine[idx] !== null){ //elem is not empty
             if(
               (currentLine[idx] == currentLine[+idx+1]) ||
               (currentLine[idx] == currentLine[+idx+2] && currentLine[+idx+1] == null) ||
               (currentLine[idx] == currentLine[+idx+3] && currentLine[+idx+1] == null && currentLine[+idx+2] == null)
-            ){
-              let left = currentLine.length-1-idx; //прибавить всем впереди
-              for(let j = 0;j<left;j++){
-                if(currentLine[+idx+1+j] !== null){ //если не пустая клетка, то прибавляем в анимацию
+            ){ //current and next the same or null between
+              let front = currentLine.length-1-idx; //how many spots left in the front
+              for(let j = 0;j<front;j++){
+                if(currentLine[+idx+1+j] !== null){ //not empty --> plus 1 for merge
                   arr[+idx+1+j]++;
                 }
               }
-              pass = true;
+              pass = true; //turn trigger on, to pass value if it's same again
             }
           }
         } else {
           if(currentLine[idx] !== null) pass = false;
         }
       });
-      newArrays.push(result.reverse()); //результат этого блока: просчетать дополнительные шаги при слияние
+      if(direction == 'swipeRight') result = result.reverse();
+      newArrays.push(result); //result: plus extra merge way
     }
     return newArrays
   }
-  _countionCompaction(aniArrays: Array<Array<number>>): Array<Array<any>>{
+  _countionMerge(aniArrays: Array<Array<number>>,direction: String): Array<Array<any>>{
     let newArrays = [];
     aniArrays.forEach((arr)=>{
       let concatArr = [null,null,null,null];
       arr.forEach((elem,i)=>{
-        if((elem ^ 0) === elem) {
-          if(concatArr[elem+i] === null) concatArr[elem+i] = 1;
-          else if(concatArr[elem+i] === 1) concatArr[elem+i] = true;
+        if((elem ^ 0) === elem) { //if elem is num
+          if (direction == 'swipeRight'){
+            if(concatArr[elem+i] === null) concatArr[elem+i] = 1; //num on this spot
+            else if(concatArr[elem+i] === 1) concatArr[elem+i] = true; //second num on the spot means merge
+          }
+          else{
+            if(concatArr[+i-elem] === null) concatArr[+i-elem] = 1; //num on this spot
+            else if(concatArr[+i-elem] === 1) concatArr[+i-elem] = true; //second num on the spot means merge
+          }
         }
       });
       newArrays.push(concatArr);
@@ -148,6 +180,8 @@ export class SwipeService {
     let extension: any;
     if(kind == 'swipeRight') extension = 'r';
     else if(kind == 'swipeLeft') extension = 'l';
+    else if(kind == 'swipeDown') extension = 'd';
+    else if(kind == 'swipeUp') extension = 't';
     for(let elem of array){
       if(elem!==null){
         if(elem == 0) elem = null;
