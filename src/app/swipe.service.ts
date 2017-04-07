@@ -52,8 +52,8 @@ export class SwipeService {
     lines = this._reverse(lines); //reverse
     lines = this._fillMissingUp(lines,'swipeRight'); //filling to 4
     list = this._remodel(lines);  //transformed to list
-    let mergeList = this._concatination(mergeArr); //to merge list
-    let animationList = this._concatination(animationArr); //to anim list
+    let mergeList = this._remodel(mergeArr); //to merge list
+    let animationList = this._remodel(animationArr); //to anim list
     let animationListStr = this._animationRemodel(animationList,'swipeDown'); //to string triggers
     return [list,animationListStr,mergeList];
   }
@@ -69,8 +69,8 @@ export class SwipeService {
     lines = this._nullFilter(lines);
     lines = this._fillMissingUp(lines,'swipeLeft');
     list = this._remodel(lines);
-    let mergeList = this._concatination(mergeArr); //to merge list
-    let animationList = this._concatination(animationArr); //to anim list
+    let mergeList = this._remodel(mergeArr); //to merge list
+    let animationList = this._remodel(animationArr); //to anim list
     let animationListStr = this._animationRemodel(animationList,'swipeUp'); //to string triggers
     return [list,animationListStr,mergeList];
   }

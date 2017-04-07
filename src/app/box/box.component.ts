@@ -45,29 +45,25 @@ export class BoxComponent implements OnInit {
   _keyup(e): void{
     if(e.code == 'ArrowRight'){
       let result = this.swipeService.swipeRight(this.sharedList);
-      this.animationList = result[1];
-      this.compactionList = result[2];
-      this.sharedList = this._extention(result[0]);
+      this._resultHandling(this,result);
     }else if(e.code == 'ArrowLeft'){
       let result = this.swipeService.swipeLeft(this.sharedList);
-      this.animationList = result[1];
-      this.compactionList = result[2];
-      this.sharedList = this._extention(result[0]);
+      this._resultHandling(this,result);
     }else if(e.code == 'ArrowDown'){
       let result = this.swipeService.swipeDown(this.sharedList);
-      this.animationList = result[1];
-      this.compactionList = result[2];
-      this.sharedList = this._extention(result[0]);
+      this._resultHandling(this,result);
     }else if(e.code == 'ArrowUp'){
       let result = this.swipeService.swipeUp(this.sharedList);
-      this.animationList = result[1];
-      this.compactionList = result[2];
-      this.sharedList = this._extention(result[0]);
+      this._resultHandling(this,result);
     }
-
   }
   _keydown(e: Event): void{
     e.preventDefault();
+  }
+  _resultHandling(context,result): void{
+    context.animationList = result[1];
+    context.compactionList = result[2];
+    context.sharedList = this._extention(result[0]);
   }
   _extention(array: Array<number>): Array<number>{
     let nulls = [];
