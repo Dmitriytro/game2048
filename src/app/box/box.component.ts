@@ -15,10 +15,10 @@ export class BoxComponent implements OnInit {
   rows = [0,1,2,3];
   columns = [0,1,2,3];
   sharedList = [
-    4,null,null,null,
-    null,4,null,4,
-    4,null,null,4,
-    null,null,4,4
+    8,4,null,4,
+    2,null,null,null,
+    null,null,null,4,
+    2,2,4,16
   ];
   animationList = [
     'null','null','null','null',
@@ -45,25 +45,25 @@ export class BoxComponent implements OnInit {
   _keyup(e): void{
     if(e.code == 'ArrowRight'){
       let result = this.swipeService.swipeRight(this.sharedList);
-      this._resultHandling(this,result);
+      this._resultHandling(result);
     }else if(e.code == 'ArrowLeft'){
       let result = this.swipeService.swipeLeft(this.sharedList);
-      this._resultHandling(this,result);
+      this._resultHandling(result);
     }else if(e.code == 'ArrowDown'){
       let result = this.swipeService.swipeDown(this.sharedList);
-      this._resultHandling(this,result);
+      this._resultHandling(result);
     }else if(e.code == 'ArrowUp'){
       let result = this.swipeService.swipeUp(this.sharedList);
-      this._resultHandling(this,result);
+      this._resultHandling(result);
     }
   }
   _keydown(e: Event): void{
     e.preventDefault();
   }
-  _resultHandling(context,result): void{
-    context.animationList = result[1];
-    context.compactionList = result[2];
-    context.sharedList = this._extention(result[0]);
+  _resultHandling(result): void{
+    this.animationList = result[1];
+    this.compactionList = result[2];
+    this.sharedList = this._extention(result[0]);
   }
   _extention(array: Array<number>): Array<number>{
     let nulls = [];

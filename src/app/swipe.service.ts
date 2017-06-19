@@ -43,7 +43,9 @@ export class SwipeService {
     let animationArr = this._cutColumn(animation); // cut animation to lines
     let lines = this._cutColumn(list); // cut column
     animationArr = this._countionFA(animationArr,'swipeRight'); //fill fly-way up
+    lines = this._reverse(lines); //reverse
     animationArr = this._countionSA(animationArr,lines,'swipeRight'); //plus extra merge way
+    lines = this._reverse(lines); //reverse
     let mergeArr = this._countionMerge(animationArr,'swipeRight'); //founding merge places
     lines = this._nullFilter(lines); //cut nulls
     lines = this._reverse(lines);
@@ -127,9 +129,14 @@ export class SwipeService {
     for(let i in aniArrays){
       let currentLine = listArr[i].slice(); //copy each line
       let result = aniArrays[i];
-      if(direction == 'swipeRight') result = result.reverse();
+      if(direction == 'swipeRight') {
+        result = result.reverse();
+        // currentLine = currentLine.reverse();
+      }
       let pass = false; //trigger
       result.forEach((elem,idx,arr)=>{ //looking for the same values
+        // console.log(arr.slice());
+        // console.log(currentLine.slice());
         if(!pass){ //if trigger is off
           if(currentLine[idx] !== null){ //elem is not empty
             if(
@@ -150,7 +157,10 @@ export class SwipeService {
           if(currentLine[idx] !== null) pass = false;
         }
       });
-      if(direction == 'swipeRight') result = result.reverse();
+      if(direction == 'swipeRight') {
+        result = result.reverse();
+        // currentLine = currentLine.reverse();
+      }
       newArrays.push(result); //result: plus extra merge way
     }
     return newArrays

@@ -5,20 +5,20 @@ import { Component, OnChanges, Input, trigger, state, animate, style, transition
   templateUrl: './spot.component.html',
   styleUrls: ['./spot.component.css'],
   animations: [
-    trigger('movementtigger',[
+    trigger('movementtrigger',[
       state('null',style({transform: 'translateX(0px)'})),
-      state('r3',style({transform: 'translateX(280px)'})),
-      state('r2',style({transform: 'translateX(200px)'})),
-      state('r1',style({transform: 'translateX(40px)'})),
-      state('l3',style({transform: 'translateX(-280px)'})),
-      state('l2',style({transform: 'translateX(-200px)'})),
-      state('l1',style({transform: 'translateX(-40px)'})),
-      state('d3',style({transform: 'translateY(280px)'})),
-      state('d2',style({transform: 'translateY(200px)'})),
-      state('d1',style({transform: 'translateY(40px)'})),
-      state('t3',style({transform: 'translateY(-280px)'})),
-      state('t2',style({transform: 'translateY(-200px)'})),
-      state('t1',style({transform: 'translateY(-40px)'})),
+      state('r3',style({transform: 'translateX(360px)'})),
+      state('r2',style({transform: 'translateX(240px)'})),
+      state('r1',style({transform: 'translateX(120px)'})),
+      state('l3',style({transform: 'translateX(-360px)'})),
+      state('l2',style({transform: 'translateX(-240px)'})),
+      state('l1',style({transform: 'translateX(-120px)'})),
+      state('d3',style({transform: 'translateY(360px)'})),
+      state('d2',style({transform: 'translateY(240px)'})),
+      state('d1',style({transform: 'translateY(120px)'})),
+      state('t3',style({transform: 'translateY(-360px)'})),
+      state('t2',style({transform: 'translateY(-240px)'})),
+      state('t1',style({transform: 'translateY(-120px)'})),
       transition('null => r3',[animate('300ms ease-in')]),
       transition('null => r2',[animate('300ms ease-in')]),
       transition('null => r1',[animate('300ms ease-in')]),
@@ -44,7 +44,7 @@ import { Component, OnChanges, Input, trigger, state, animate, style, transition
       transition('t2 => null',[animate('0ms ease-out')]),
       transition('t1 => null',[animate('0ms ease-out')])
     ]),
-    trigger('compactiontigger',[
+    trigger('compactiontrigger',[
       state('null',style({transform: 'scale(1)'})),
       state('compaction',style({transform: 'scale(1.2)'})),
       transition('compaction => null',[animate('100ms ease-in')])
