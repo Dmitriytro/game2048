@@ -12,55 +12,57 @@ import { AnimationService } from "../animation.service";
   }
 })
 export class BoxComponent implements OnInit {
-  rows = [0,1,2,3];
-  columns = [0,1,2,3];
-  sharedList = [
-    8,4,null,4,
-    2,null,null,null,
-    null,null,null,4,
-    2,2,4,16
-  ];
-  animationList = [
-    'null','null','null','null',
-    'null','null','null','null',
-    'null','null','null','null',
-    'null','null','null','null'
-  ];
-  compactionList = [
-    'null','null','null','null',
-    'null','null','null','null',
-    'null','null','null','null',
-    'null','null','null','null'
-  ];
+  rows = [];
+  columns = [];
+  sharedList = [];
+  animationList = [];
+  compactionList = [];
+  animationDone = true;
   constructor(
     private swipeService: SwipeService,
     private animationService: AnimationService
   ){}
   ngOnInit() {
     this.generate();
+    let times = n => f => {
+      let iter = i => {
+        if (i === n) return;
+        f (i);
+        iter (i + 1)
+      };
+      return iter (0)
+    };
+    times(4) ((i)=> {
+      this.rows.push(i);
+      this.columns.push(i);
+      times(4) (()=> {
+        this.animationList.push('null');
+        this.compactionList.push('null');
+        this.sharedList.push(null);
+      });
+      this.sharedList = this._extention(this.sharedList);
+    });
   }
   generate(){
     console.log('start');
   }
+
   _keyup(e): void{
-    if(e.code == 'ArrowRight'){
-      let result = this.swipeService.swipeRight(this.sharedList);
+    if(this.animationDone) {
+      let result = [];
+      this.animationDone = !this.animationDone;
+      if(e.code == 'ArrowRight') result = this.swipeService.swipeRight(this.sharedList);
+      else if(e.code == 'ArrowLeft') result = this.swipeService.swipeLeft(this.sharedList);
+      else if(e.code == 'ArrowDown') result = this.swipeService.swipeDown(this.sharedList);
+      else if(e.code == 'ArrowUp') result = this.swipeService.swipeUp(this.sharedList);
       this._resultHandling(result);
-    }else if(e.code == 'ArrowLeft'){
-      let result = this.swipeService.swipeLeft(this.sharedList);
-      this._resultHandling(result);
-    }else if(e.code == 'ArrowDown'){
-      let result = this.swipeService.swipeDown(this.sharedList);
-      this._resultHandling(result);
-    }else if(e.code == 'ArrowUp'){
-      let result = this.swipeService.swipeUp(this.sharedList);
-      this._resultHandling(result);
+      setTimeout(()=>{this.animationDone = !this.animationDone},300);
     }
   }
   _keydown(e: Event): void{
     e.preventDefault();
   }
-  _resultHandling(result): void{
+  _resultHandling(result: Array<Array<number>>): void{
     this.animationList = result[1];
     this.compactionList = result[2];
     this.sharedList = this._extention(result[0]);
@@ -71,7 +73,8 @@ export class BoxComponent implements OnInit {
       if(array[i]==null) nulls.push(i);
     }
     let numOfNull = nulls[Math.floor(Math.random()*nulls.length)];
-    array[numOfNull] = 2;
+    if(Math.random()>0.7) array[numOfNull] = 4;
+    else array[numOfNull] = 2;
     return array
   }
 }
