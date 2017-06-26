@@ -78,11 +78,16 @@ export class SwipeService {
   }
   _cutRow(list: Array<number>): Array<Array<number>>{
     let newArr = [];
-    newArr.push(list.slice(0,4));
-    newArr.push(list.slice(4,8));
-    newArr.push(list.slice(8,12));
-    newArr.push(list.slice(12));
-    return newArr
+    let length = Math.sqrt(list.length);
+    const chopper = (list,length,newArr)=>{
+      let part = list.splice(0,length); //cut the part
+      if(part.length>0) { //check if this something
+        newArr.push(part); //then add part
+      }
+      if(newArr.length == length) return newArr; //is it final length?
+      else return chopper(list,length,newArr); //or need to conti
+    };
+    return chopper(list.slice(),length,newArr);
   }
   _cutRowReverse(list: Array<number>): Array<Array<number>>{
     let rows = this._cutRow(list);

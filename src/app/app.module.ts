@@ -7,7 +7,6 @@ import { ScoreComponent } from './score/score.component';
 import { BoxComponent } from './box/box.component';
 import { SpotComponent } from './spot/spot.component';
 import { SwipeService } from "./swipe.service";
-import { AnimationService } from "./animation.service";
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import { AnimationService } from "./animation.service";
     HttpModule
   ],
   providers: [
-    SwipeService,
-    AnimationService
+    SwipeService
   ],
   bootstrap: [AppComponent]
 })

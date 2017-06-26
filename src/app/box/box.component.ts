@@ -1,6 +1,5 @@
 import { Component, OnInit} from '@angular/core';
 import { SwipeService } from "../swipe.service";
-import { AnimationService } from "../animation.service";
 
 @Component({
   selector: 'app-box',
@@ -18,13 +17,10 @@ export class BoxComponent implements OnInit {
   animationList = [];
   compactionList = [];
   animationDone = true;
-  constructor(
-    private swipeService: SwipeService,
-    private animationService: AnimationService
-  ){}
+  constructor(private swipeService: SwipeService){}
   ngOnInit() {
     this.generate();
-    let times = n => f => {
+    const times = n => f => {
       let iter = i => {
         if (i === n) return;
         f (i);
