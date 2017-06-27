@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SwipeService } from "../swipe.service";
 
 @Component({
   selector: 'app-score',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScoreComponent implements OnInit {
 
-  constructor() { }
+  score: number = 0;
+  constructor(private swipeService: SwipeService) { }
 
   ngOnInit() {
+    this.swipeService.scoreIncrease().subscribe(score => this.score += score);
   }
 
 }

@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Output, EventEmitter} from '@angular/core';
+
 
 @Injectable()
 export class SwipeService {
-
+  @Output() score: EventEmitter<number> = new EventEmitter();
   constructor() { }
+  scoreIncrease(): EventEmitter{
+    return this.score;
+  }
   swipeRight(list: Array<number>): Array<Array<any>>{
     let animation = list.slice(); //copy list to animation
     let animationArr = this._cutRow(animation); // cut animation to lines
@@ -228,12 +232,15 @@ export class SwipeService {
       if (arr[i] !== null){ //если не нулл
         if (arr[i] == arr[+i+1]){ //и она равна следующей цифре
           newArr.push(arr[i]*2); //составляем новый массив, перемножая на два
+          this.score.emit(arr[i]*2);
           arr[+i+1] = null; //следующая равна нулл
         }else if(arr[+i+1] == null && arr[i] == arr[+i+2]){
           newArr.push(arr[i]*2);
+          this.score.emit(arr[i]*2);
           arr[+i+2] = null;
         }else if(arr[+i+1] == null && arr[+i+2] == null && arr[i] == arr[+i+3]){
           newArr.push(arr[i]*2);
+          this.score.emit(arr[i]*2);
           arr[+i+3] = null;
         }else {
           newArr.push(arr[i]); //не равна следующей

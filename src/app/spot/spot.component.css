@@ -3,16 +3,16 @@
   height: 100%;
   display: block;
   text-align: center;
-  background-color: #DCEDC8;
+  background-color: #CDC1B4;
 }
 .spot-number{
-  background-color: #AED581;
+  background-color: #EEE4DA;
 }
 .number{
   font-size: 56px;
   display: inline-block;
   height: inherit;
   line-height: 100px;
-  color: #33691E;
+  color: #776E65;
 }
 

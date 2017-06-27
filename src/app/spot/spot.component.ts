@@ -19,18 +19,18 @@ import { Component, OnChanges, Input, trigger, state, animate, style, transition
       state('t3',style({transform: 'translateY(-360px)'})),
       state('t2',style({transform: 'translateY(-240px)'})),
       state('t1',style({transform: 'translateY(-120px)'})),
-      transition('null => r3',[animate('300ms ease-in')]),
-      transition('null => r2',[animate('300ms ease-in')]),
-      transition('null => r1',[animate('300ms ease-in')]),
-      transition('null => l3',[animate('300ms ease-in')]),
-      transition('null => l2',[animate('300ms ease-in')]),
-      transition('null => l1',[animate('300ms ease-in')]),
-      transition('null => d3',[animate('300ms ease-in')]),
-      transition('null => d2',[animate('300ms ease-in')]),
-      transition('null => d1',[animate('300ms ease-in')]),
-      transition('null => t3',[animate('300ms ease-in')]),
-      transition('null => t2',[animate('300ms ease-in')]),
-      transition('null => t1',[animate('300ms ease-in')]),
+      transition('null => r3',[animate('100ms ease-in')]),
+      transition('null => r2',[animate('100ms ease-in')]),
+      transition('null => r1',[animate('100ms ease-in')]),
+      transition('null => l3',[animate('100ms ease-in')]),
+      transition('null => l2',[animate('100ms ease-in')]),
+      transition('null => l1',[animate('100ms ease-in')]),
+      transition('null => d3',[animate('100ms ease-in')]),
+      transition('null => d2',[animate('100ms ease-in')]),
+      transition('null => d1',[animate('100ms ease-in')]),
+      transition('null => t3',[animate('100ms ease-in')]),
+      transition('null => t2',[animate('100ms ease-in')]),
+      transition('null => t1',[animate('100ms ease-in')]),
       transition('r3 => null',[animate('0ms ease-out')]),
       transition('r2 => null',[animate('0ms ease-out')]),
       transition('r1 => null',[animate('0ms ease-out')]),
@@ -55,7 +55,7 @@ export class SpotComponent implements OnChanges {
   @Input() number: number;
   @Input() anim: string;
   @Input() compaction: any;
-  time: number = 300;
+  time: number = 100;
   state: String = 'null';
   state2: String = 'null';
   render: number;

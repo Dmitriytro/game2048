@@ -14,10 +14,13 @@ export class BoxComponent implements OnInit {
   rows = [];
   columns = [];
   sharedList = [];
+  lastSharedList = [];
   animationList = [];
   compactionList = [];
   animationDone = true;
-  constructor(private swipeService: SwipeService){}
+  constructor(
+    private swipeService: SwipeService
+  ){}
   ngOnInit() {
     this.generate();
     const times = n => f => {
@@ -52,7 +55,7 @@ export class BoxComponent implements OnInit {
       else if(e.code == 'ArrowDown') result = this.swipeService.swipeDown(this.sharedList);
       else if(e.code == 'ArrowUp') result = this.swipeService.swipeUp(this.sharedList);
       this._resultHandling(result);
-      setTimeout(()=>{this.animationDone = !this.animationDone},300);
+      setTimeout(()=>{this.animationDone = !this.animationDone},100);
     }
   }
   _keydown(e: Event): void{
@@ -61,7 +64,8 @@ export class BoxComponent implements OnInit {
   _resultHandling(result: Array<Array<number>>): void{
     this.animationList = result[1];
     this.compactionList = result[2];
-    this.sharedList = this._extention(result[0]);
+    if(this.lastSharedList.toString() !== result[0].toString()) this.sharedList = this._extention(result[0]);
+    this.lastSharedList = this.sharedList;
   }
   _extention(array: Array<number>): Array<number>{
     let nulls = [];

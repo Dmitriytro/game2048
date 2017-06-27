@@ -8,6 +8,7 @@ import { BoxComponent } from './box/box.component';
 import { SpotComponent } from './spot/spot.component';
 import { SwipeService } from "./swipe.service";
 
+
 @NgModule({
   declarations: [
     AppComponent,
