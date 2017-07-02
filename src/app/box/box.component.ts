@@ -18,6 +18,7 @@ export class BoxComponent implements OnInit {
   animationList = [];
   compactionList = [];
   animationDone = true;
+  over = false;
   constructor(
     private swipeService: SwipeService
   ){}
@@ -47,7 +48,7 @@ export class BoxComponent implements OnInit {
   }
 
   _keyup(e): void{
-    if(this.animationDone) {
+    if(this.animationDone && !this.over) {
       let result = [];
       this.animationDone = !this.animationDone;
       if(e.code == 'ArrowRight') result = this.swipeService.swipeRight(this.sharedList);
@@ -66,6 +67,7 @@ export class BoxComponent implements OnInit {
     this.compactionList = result[2];
     if(this.lastSharedList.toString() !== result[0].toString()) this.sharedList = this._extention(result[0]);
     this.lastSharedList = this.sharedList;
+    this._lossCheck(this.sharedList);
   }
   _extention(array: Array<number>): Array<number>{
     let nulls = [];
@@ -76,5 +78,8 @@ export class BoxComponent implements OnInit {
     if(Math.random()>0.7) array[numOfNull] = 4;
     else array[numOfNull] = 2;
     return array
+  }
+  _lossCheck(array: Array<number>): void{
+    if(array.filter(elem => elem == null).length == 0) this.over = this.swipeService.optionCheck(array);
   }
 }

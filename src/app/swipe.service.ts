@@ -5,8 +5,11 @@ import {Injectable, Output, EventEmitter} from '@angular/core';
 export class SwipeService {
   @Output() score: EventEmitter<number> = new EventEmitter();
   constructor() { }
-  scoreIncrease(): EventEmitter{
+  scoreIncrease(): EventEmitter<number>{
     return this.score;
+  }
+  optionCheck(array: Array<number>): boolean{
+    return true
   }
   swipeRight(list: Array<number>): Array<Array<any>>{
     let animation = list.slice(); //copy list to animation
