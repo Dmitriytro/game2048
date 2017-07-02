@@ -9,7 +9,14 @@ export class SwipeService {
     return this.score;
   }
   optionCheck(array: Array<number>): boolean{
-    return true
+    let rows = this._cutRow(array.slice());
+    let column = this._cutColumn(array.slice());
+    rows = this._doubleNearby(rows);
+    rows = this._nullFilter(rows);
+    column = this._doubleNearby(column);
+    column = this._nullFilter(column);
+    let lines = column.concat(rows);
+    return lines.every(elem => elem.length == 4);
   }
   swipeRight(list: Array<number>): Array<Array<any>>{
     let animation = list.slice(); //copy list to animation
