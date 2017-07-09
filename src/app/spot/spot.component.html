@@ -1,5 +1,5 @@
-<div class="spot-number" [@movementtrigger]="state" [@compactiontrigger]="state2">
-  <div class="number">
+<div class="spot-number" [@movementtrigger]="state" [@compactiontrigger]="state2" [style.backgroundColor]="bgColor">
+  <div class="number" [style.fontSize]="size">
     {{render}}
   </div>
 </div>

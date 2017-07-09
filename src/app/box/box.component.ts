@@ -23,7 +23,6 @@ export class BoxComponent implements OnInit {
     private swipeService: SwipeService
   ){}
   ngOnInit() {
-    this.generate();
     const times = n => f => {
       let iter = i => {
         if (i === n) return;
@@ -43,10 +42,10 @@ export class BoxComponent implements OnInit {
       this.sharedList = this._extention(this.sharedList);
     });
   }
-  generate(){
-    console.log('start');
+  restart(): void{
+    this.over = false;
+    window.location.reload();
   }
-
   _keyup(e): void{
     if(this.animationDone && !this.over) {
       let result = [];

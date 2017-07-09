@@ -55,16 +55,23 @@ export class SpotComponent implements OnChanges {
   @Input() number: number;
   @Input() anim: string;
   @Input() compaction: any;
+  scheme: Array<string> = ['#78909C','#455A64','#263238',
+    '#00695C','#009688','#43A047','#689F38','#827717',
+    '#EF6C00','#BF360C','#FF9800','#8BC34A','#FFEB3B',
+    '#CDDC39','#009688','#00BCD4'];
+  bgColor: string = 'none';
+  size: string = '56px';
   time: number = 100;
   state: String = 'null';
   state2: String = 'null';
   render: number;
-  constructor() { }
+  constructor() {}
   ngOnChanges(): void{
     if(this.anim) {
       setTimeout(()=>{
         this.render = this.number;
-        this.state = 'null'
+        this.state = 'null';
+        this._schemeSwitch(this.number);
       },this.time);
       this.state = this.anim;
     }
@@ -72,12 +79,30 @@ export class SpotComponent implements OnChanges {
       setTimeout(()=>{
         this.state2 = 'compaction';
         this.render = this.number;
+        this._schemeSwitch(this.number);
         setTimeout(()=>{
           this.state2 = 'null';
         },1);
       },this.time);
     } else if(this.compaction == 1){
-      setTimeout(()=>{this.render = this.number},this.time);
+      setTimeout(()=>{
+        this.render = this.number;
+        this._schemeSwitch(this.number);
+      },this.time);
     }
+  }
+  _schemeSwitch(number: number): void {
+    let arrNum = this._binarySeq(number);
+    this.bgColor = this.scheme[arrNum]
+  }
+  _binarySeq(value: number): number{
+    let count = -1;
+    while(value > 1) {
+      value /= 2;
+      count++;
+    }
+    if(count>10){this.size = '44px';}
+    count = count % this.scheme.length;
+    return count;
   }
 }

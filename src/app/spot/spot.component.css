@@ -4,15 +4,16 @@
   display: block;
   text-align: center;
   background-color: #CDC1B4;
+  border-radius: 5px;
 }
 .spot-number{
-  background-color: #EEE4DA;
+  border-radius: 5px;
 }
 .number{
   font-size: 56px;
   display: inline-block;
   height: inherit;
   line-height: 100px;
-  color: #776E65;
+  color: white;
 }
 

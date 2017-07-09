@@ -1,4 +1,3 @@
-<div *ngIf="over">Game Over!</div>
 <div class="field" (keyup)="swipe(event.keyCode)">
   <div class="row" *ngFor="let row of rows; let i = index">
     <div class="column" *ngFor="let column of columns; let k = index">
@@ -8,5 +7,10 @@
                   [compaction]="compactionList[i*columns.length+k]"></app-spot>
       </div>
     </div>
+  </div>
+  <div class="transparent" *ngIf="over"></div>
+  <div class="over" *ngIf="over">
+    <span class="overText">Game Over!</span>
+    <div class="retryBtn" (click)="restart()">Try again</div>
   </div>
 </div>
