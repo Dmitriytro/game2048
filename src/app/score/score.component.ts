@@ -13,6 +13,6 @@ export class ScoreComponent implements OnInit {
 
   ngOnInit() {
     this.swipeService.scoreIncrease().subscribe(score => this.score += score);
+    this.swipeService.resScore().subscribe(() => this.score = 0);
   }
-
 }

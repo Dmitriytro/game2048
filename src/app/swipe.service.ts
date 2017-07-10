@@ -4,9 +4,16 @@ import {Injectable, Output, EventEmitter} from '@angular/core';
 @Injectable()
 export class SwipeService {
   @Output() score: EventEmitter<number> = new EventEmitter();
+  @Output() zeroingOut: EventEmitter<any> = new EventEmitter();
   constructor() { }
   scoreIncrease(): EventEmitter<number>{
     return this.score;
+  }
+  resScore(): EventEmitter<any>{
+    return this.zeroingOut
+  }
+  restartScore(): void{
+    this.zeroingOut.emit();
   }
   optionCheck(array: Array<number>): boolean{
     let rows = this._cutRow(array.slice());
