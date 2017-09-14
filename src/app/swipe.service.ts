@@ -1,13 +1,12 @@
-import {Injectable, Output, EventEmitter} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import { Injectable, Output, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from "rxjs";
 
 
 @Injectable()
 export class SwipeService {
   @Output() score: EventEmitter<number> = new EventEmitter();
   private _zeroingOutSource = new BehaviorSubject<number>(0);
-  // @Output() zeroingOut: EventEmitter<any> = new EventEmitter();
-  constructor() { }
+  constructor() {}
   scoreIncrease(): EventEmitter<number>{
     return this.score;
   }
@@ -15,12 +14,6 @@ export class SwipeService {
   restartScore(): void{
     this._zeroingOutSource.next(0);
   }
-  // resScore(): EventEmitter<any>{
-  //   return this.zeroingOut
-  // }
-  // restartScore(): void{
-  //   this.zeroingOut.emit();
-  // }
 
   optionCheck(array: Array<number>): boolean{
     let rows = this._cutRow(array.slice());

@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
@@ -17,6 +18,7 @@ import { SwipeService } from "./swipe.service";
     SpotComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     HttpModule
   ],
