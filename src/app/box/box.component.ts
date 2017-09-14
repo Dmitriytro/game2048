@@ -57,7 +57,7 @@ export class BoxComponent implements OnInit {
     this.swipeService.restartScore();
   }
   _keyup(e): void{
-    if(this.animationDone && !this.over) {
+    if(e.code.indexOf('Arrow')>=0 && this.animationDone && !this.over) {
       let result = [];
       this.animationDone = !this.animationDone;
       if(e.code == 'ArrowRight') result = this.swipeService.swipeRight(this.sharedList);
