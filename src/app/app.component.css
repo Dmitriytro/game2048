@@ -1,21 +1,16 @@
 .wrapper{
   display: block;
   text-align: center;
+  margin: -8px;
 }
 .scene{
   display: inline-block;
   text-align: center;
-  width: 1024px;
+  width: 100%;
   height: auto;
 }
-header{
-  width: 100%;
-  font-size: 28px;
-  display: inline-block;
-  text-align: center;
-}
 .content{
-  background-color: #F1F8E9;
+  background-color: darkslategray;
   display: inline-block;
   text-align: center;
   width: 100%;
@@ -24,5 +19,5 @@ header{
   display: inline-block;
 }
 .content-main{
-  height: 4000px;
+  /*height: 600px;*/
 }
