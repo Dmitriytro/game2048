@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { SwipeService } from "../swipe.service";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-box',
@@ -19,11 +20,16 @@ export class BoxComponent implements OnInit {
   compactionList = [];
   animationDone = true;
   over = false;
+  restartStreamSubs: Subscription;
   constructor(
     private swipeService: SwipeService
   ){}
   ngOnInit() {
     this.start();
+    this.restartStreamSubs = this.swipeService.restartStream$.subscribe(()=>this.restart());
+  }
+  ngOnDestroy(): void{
+    this.restartStreamSubs.unsubscribe();
   }
   start(): void{
     const times = n => f => {

@@ -1,26 +1,29 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
-import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { Subject } from "rxjs/Subject";
 
 
 @Injectable()
 export class SwipeService {
-  @Output() score: EventEmitter<number> = new EventEmitter();
-  private _zeroingOutSource = new BehaviorSubject<number>(0);
   constructor() {}
-  scoreIncrease(): EventEmitter<number>{
-    return this.score;
-  }
+  private _score = new Subject<number>();
+  private _zeroingOutSource = new Subject<number>();
+  private  _restartStream = new Subject<void>();
+  addingScore$ = this._score.asObservable();
   zeroingOuter$ = this._zeroingOutSource.asObservable();
+  restartStream$ = this._restartStream.asObservable();
   restartScore(): void{
     this._zeroingOutSource.next(0);
+  }
+  restartGame(): void{
+    this._restartStream.next();
   }
 
   optionCheck(array: Array<number>): boolean{
     let rows = this._cutRow(array.slice());
     let column = this._cutColumn(array.slice());
-    rows = this._doubleNearby(rows);
+    rows = this._doubleNearby(rows,'no score');
     rows = this._nullFilter(rows);
-    column = this._doubleNearby(column);
+    column = this._doubleNearby(column,'no score');
     column = this._nullFilter(column);
     let lines = column.concat(rows);
     return lines.every(elem => elem.length == 4);
@@ -185,7 +188,6 @@ export class SwipeService {
       });
       if(direction == 'swipeRight') {
         result = result.reverse();
-        // currentLine = currentLine.reverse();
       }
       newArrays.push(result); //result: plus extra merge way
     }
@@ -234,33 +236,33 @@ export class SwipeService {
     }
     return newArrays
   }
-  _doubleNearby(arrays: Array<Array<number>>): Array<Array<number>>{
+  _doubleNearby(arrays: Array<Array<number>>,score?: String): Array<Array<number>>{
     let newArrays = [];
     for(let array of arrays){
       newArrays.push(
-        this._checkNearby(array)
+        this._checkNearby(array,score)
       );
     }
     return newArrays
   }
-  _checkNearby(arr: Array<number>): Array<number>{
+  _checkNearby(arr: Array<number>,score?: String): Array<number>{
     let newArr = [];
     for (let i in arr){
-      if (arr[i] !== null){ //если не нулл
-        if (arr[i] == arr[+i+1]){ //и она равна следующей цифре
-          newArr.push(arr[i]*2); //составляем новый массив, перемножая на два
-          this.score.emit(arr[i]*2);
-          arr[+i+1] = null; //следующая равна нулл
+      if (arr[i] !== null){
+        if (arr[i] == arr[+i+1]){
+          newArr.push(arr[i]*2);
+          if(!score) this._score.next(arr[i]*2);
+          arr[+i+1] = null;
         }else if(arr[+i+1] == null && arr[i] == arr[+i+2]){
           newArr.push(arr[i]*2);
-          this.score.emit(arr[i]*2);
+          if(!score) this._score.next(arr[i]*2);
           arr[+i+2] = null;
         }else if(arr[+i+1] == null && arr[+i+2] == null && arr[i] == arr[+i+3]){
           newArr.push(arr[i]*2);
-          this.score.emit(arr[i]*2);
+          if(!score) this._score.next(arr[i]*2);
           arr[+i+3] = null;
         }else {
-          newArr.push(arr[i]); //не равна следующей
+          newArr.push(arr[i]);
         }
       }else newArr.push(null);
     }
