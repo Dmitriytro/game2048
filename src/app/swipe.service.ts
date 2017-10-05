@@ -8,16 +8,19 @@ export class SwipeService {
   private _score = new Subject<number>();
   private _zeroingOutSource = new Subject<number>();
   private  _restartStream = new Subject<void>();
+  private  _progressStream = new Subject<Array<number>>();
+  private  _loadProgressStream = new Subject<Array<number>>();
   addingScore$ = this._score.asObservable();
   zeroingOuter$ = this._zeroingOutSource.asObservable();
   restartStream$ = this._restartStream.asObservable();
+  progressStream$ = this._progressStream.asObservable();
+  loadProgressStream$ = this._loadProgressStream.asObservable();
   restartScore(): void{
     this._zeroingOutSource.next(0);
   }
   restartGame(): void{
     this._restartStream.next();
   }
-
   optionCheck(array: Array<number>): boolean{
     let rows = this._cutRow(array.slice());
     let column = this._cutColumn(array.slice());
@@ -27,6 +30,12 @@ export class SwipeService {
     column = this._nullFilter(column);
     let lines = column.concat(rows);
     return lines.every(elem => elem.length == 4);
+  }
+  sendProgress(array: Array<number>): void{
+    this._progressStream.next(array);
+  }
+  loadProgress(lastPosition: Array<number>): void{
+    this._loadProgressStream.next(lastPosition);
   }
   swipeRight(list: Array<number>): Array<Array<any>>{
     let animation = list.slice(); //copy list to animation
@@ -160,12 +169,9 @@ export class SwipeService {
       let result = aniArrays[i];
       if(direction == 'swipeRight') {
         result = result.reverse();
-        // currentLine = currentLine.reverse();
       }
       let pass = false; //trigger
       result.forEach((elem,idx,arr)=>{ //looking for the same values
-        // console.log(arr.slice());
-        // console.log(currentLine.slice());
         if(!pass){ //if trigger is off
           if(currentLine[idx] !== null){ //elem is not empty
             if(

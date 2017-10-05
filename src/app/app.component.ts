@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = '2048';
+  over: boolean = false;
+  switch($event): void{
+    this.over = $event;
+  }
 }

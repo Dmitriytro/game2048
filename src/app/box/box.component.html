@@ -11,6 +11,6 @@
   <div class="transparent" *ngIf="over"></div>
   <div class="over" *ngIf="over">
     <span class="overText">Game Over!</span>
-    <div class="retryBtn" (click)="restart()">Try again</div>
+    <div class="retryBtn" (click)="restart()" *ngIf="!topScore">Try again</div>
   </div>
 </div>

@@ -18,6 +18,9 @@
 .content-top{
   display: inline-block;
 }
+.content-ladder{
+  margin-bottom: 10px;
+}
 .content-main{
-  /*height: 600px;*/
+  margin-bottom: 10px;
 }

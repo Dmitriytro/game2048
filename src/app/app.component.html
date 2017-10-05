@@ -4,8 +4,12 @@
       <div class="content-top">
         <app-score></app-score>
       </div>
+      <div class="content-ladder">
+        <app-scoreboard *ngIf="over"></app-scoreboard>
+        <!--<app-add-best-score *ngIf="topScore"></app-add-best-score>-->
+      </div>
       <div class="content-main">
-        <app-box></app-box>
+        <app-box (overSwitcher)="switch($event)"></app-box>
       </div>
     </content>
   </div>

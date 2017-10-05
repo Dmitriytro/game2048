@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { SwipeService } from "../swipe.service";
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
   }
 })
 export class BoxComponent implements OnInit {
+  @Output() overSwitcher = new EventEmitter<boolean>();
   rows = [];
   columns = [];
   sharedList = [];
@@ -20,16 +21,24 @@ export class BoxComponent implements OnInit {
   compactionList = [];
   animationDone = true;
   over = false;
+  topScore = false;
   restartStreamSubs: Subscription;
+  loadSub: Subscription;
   constructor(
     private swipeService: SwipeService
   ){}
   ngOnInit() {
     this.start();
     this.restartStreamSubs = this.swipeService.restartStream$.subscribe(()=>this.restart());
+    this.loadSub = this.swipeService.loadProgressStream$.subscribe((res)=>{
+      this.sharedList = res;
+      this._lossCheck(this.sharedList);
+    });
+    setTimeout(()=>{this.overSwitcher.emit(true)},0);
   }
   ngOnDestroy(): void{
     this.restartStreamSubs.unsubscribe();
+    this.loadSub.unsubscribe();
   }
   start(): void{
     const times = n => f => {
@@ -52,15 +61,19 @@ export class BoxComponent implements OnInit {
     });
   }
   restart(): void{
-    this.over = false;
-    this.rows = [];
-    this.columns = [];
-    this.sharedList = [];
-    this.lastSharedList = [];
-    this.animationList = [];
-    this.compactionList = [];
-    this.start();
-    this.swipeService.restartScore();
+    if(!this.topScore){
+      this.over = false;
+      this.overSwitcher.emit(this.over);
+      this.rows = [];
+      this.columns = [];
+      this.sharedList = [];
+      this.lastSharedList = [];
+      this.animationList = [];
+      this.compactionList = [];
+      this.start();
+      this.swipeService.restartScore();
+      this.swipeService.sendProgress(this.sharedList);
+    }
   }
   _keyup(e): void{
     if(e.code.indexOf('Arrow')>=0 && this.animationDone && !this.over) {
@@ -75,13 +88,16 @@ export class BoxComponent implements OnInit {
     }
   }
   _keydown(e: Event): void{
-    e.preventDefault();
+    if(!this.over){
+      e.preventDefault();
+    }
   }
   _resultHandling(result: Array<Array<number>>): void{
     this.animationList = result[1];
     this.compactionList = result[2];
     if(this.lastSharedList.toString() !== result[0].toString()) this.sharedList = this._extention(result[0]);
     this.lastSharedList = this.sharedList;
+    this.swipeService.sendProgress(this.sharedList);
     this._lossCheck(this.sharedList);
   }
   _extention(array: Array<number>): Array<number>{
@@ -95,6 +111,9 @@ export class BoxComponent implements OnInit {
     return array
   }
   _lossCheck(array: Array<number>): void{
-    if(array.filter(elem => elem == null).length == 0) this.over = this.swipeService.optionCheck(array);
+    if(array.filter(elem => elem == null).length == 0) {
+      this.over = this.swipeService.optionCheck(array);
+      this.overSwitcher.emit(this.over);
+    }
   }
 }

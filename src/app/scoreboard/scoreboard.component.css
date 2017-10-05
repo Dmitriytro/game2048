@@ -1,0 +1,32 @@
+.scoreboard{
+  background-color: cadetblue;
+  display: inline-block;
+  width: 480px;
+  height: auto;
+  border: 10px solid black;
+}
+.scoreline{
+  margin-bottom: 1px;
+}
+.position{
+  background-color: darkslategray;
+  display: inline-block;
+  width: 10%;
+  height: 40px;
+  line-height: 40px;
+}
+.name{
+  background-color: darkslategray;
+  display: inline-block;
+  width: 50%;
+  height: 40px;
+  line-height: 40px;
+}
+.score{
+  vertical-align: top;
+  background-color: darkslategray;
+  display: inline-block;
+  width: 30%;
+  height: 40px;
+  line-height: 40px;
+}
