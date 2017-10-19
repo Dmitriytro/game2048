@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
 
+
 @Component({
   selector: 'app-scoreboard',
   templateUrl: './scoreboard.component.html',
@@ -10,15 +11,16 @@ import { Player } from '../player';
 
 export class ScoreboardComponent implements OnInit {
   players: Player[] = [];
+
   constructor(private playerService: PlayerService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadPlayers();
   }
   loadPlayers(): void{
     this.playerService.getPlayers()
       .map(res => res.filter((player)=>player.name))
-      .map(res => res.sort((a,b)=> a.score > b.score))
+      .map(res => res.sort((a,b)=> b.bestScore - a.bestScore))
       .subscribe(players => this.players = players);
   }
 }

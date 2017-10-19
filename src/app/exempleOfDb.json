@@ -1,0 +1,62 @@
+db.scoreboard.insert([
+{
+"name" : "Dmitry",
+"score" : 4,
+"bestScore" : 20004,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Victor",
+"score" : 4,
+"bestScore" : 19432,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Philip",
+"score" : 4,
+"bestScore" : 18288,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Danial",
+"score" : 4,
+"bestScore" : 16288,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Anna",
+"score" : 4,
+"bestScore" : 15282,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "John",
+"score" : 4,
+"bestScore" : 12562,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Boris",
+"score" : 4,
+"bestScore" : 12080,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Ildar",
+"score" : 4,
+"bestScore" : 11980,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Yana",
+"score" : 4,
+"bestScore" : 11586,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+},
+{
+"name" : "Daria",
+"score" : 4,
+"bestScore" : 11444,
+"lastPosition" : [null, null, null, 4, 2, 2, null, null, null, null, null, null, null, null, null, null]
+}
+])

@@ -1,6 +1,7 @@
 <div class="scoreForm">
-  <p>Name: {{player.name}}</p>
-  <input [(ngModel)]="player.name" placeholder="name"/>
-  <p>New top score! {{playerScore}}</p>
-  <button (click)="addBestScore(player)" type="submit" >submit</button>
+  <span class="formLine">Congratulations! It's yours new top score: {{player.bestScore}}.</span>
+  <br/>
+  <span class="formLine">Name:</span>
+  <input [(ngModel)]="player.name" placeholder="name" class="field"/>
+  <button class="formLine" (click)="addPlayerName()" type="submit">Add</button>
 </div>

@@ -10,7 +10,7 @@
   height: auto;
 }
 .content{
-  background-color: darkslategray;
+  background-color: white;
   display: inline-block;
   text-align: center;
   width: 100%;
@@ -19,6 +19,7 @@
   display: inline-block;
 }
 .content-ladder{
+  overflow: hidden;
   margin-bottom: 10px;
 }
 .content-main{

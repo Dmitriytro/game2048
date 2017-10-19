@@ -2,14 +2,14 @@
   <div class="scene">
     <content class="content">
       <div class="content-top">
-        <app-score></app-score>
+        <app-score (recordSwitcher)="recordSwitch($event)"></app-score>
       </div>
-      <div class="content-ladder">
-        <app-scoreboard *ngIf="over"></app-scoreboard>
-        <!--<app-add-best-score *ngIf="topScore"></app-add-best-score>-->
+      <div class="content-ladder"  [@popOverState]="stateName" (@popOverState.done)="nextAnimation($event)" >
+        <app-scoreboard *ngIf="over && !topScore"></app-scoreboard>
+        <app-add-best-score (playerSaved)="recordSwitch(!$event)" *ngIf="over && topScore"></app-add-best-score>
       </div>
       <div class="content-main">
-        <app-box (overSwitcher)="switch($event)"></app-box>
+        <app-box (ladderSwitcher)="overSwitch($event)" [topScore]="topScore" ></app-box>
       </div>
     </content>
   </div>

@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { SwipeService } from "../swipe.service";
 import { Subscription } from 'rxjs/Subscription';
-import { PlayerService
-
-} from "../player.service";
+import { PlayerService } from "../player.service";
 
 @Component({
   selector: 'app-score',
@@ -11,8 +9,10 @@ import { PlayerService
   styleUrls: ['./score.component.css']
 })
 export class ScoreComponent implements OnInit {
+  @Output() recordSwitcher = new EventEmitter<boolean>();
   score: number = 0;
   bestScore: number = 0;
+  newRecord: boolean = false;
   addScoreSubs: Subscription;
   zerScoreSubs: Subscription;
   progressSubs: Subscription;
@@ -41,13 +41,20 @@ export class ScoreComponent implements OnInit {
     this.swipeService.loadProgress(lastPosition);
   }
   ngOnInit(): void{
+    // this._deleteCookie('userId');
     this.progressSubs = this.swipeService.progressStream$.subscribe((res) => {
       this.position = res;
       this.saveProgress();
     });
     this.addScoreSubs = this.swipeService.addingScore$.subscribe(score => {
       this.score += score;
-      if(this.score>this.bestScore) this.bestScore = this.score;
+      if(this.score>this.bestScore) {
+        this.bestScore = this.score;
+        if(!this.newRecord) {
+          this.newRecord = true;
+          this.recordSwitcher.emit(this.newRecord);
+        }
+      }
     });
     this.zerScoreSubs = this.swipeService.zeroingOuter$.subscribe(zero => this.score = zero);
     if(this.user_id) {

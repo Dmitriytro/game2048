@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { SwipeService } from "../swipe.service";
 import { Subscription } from 'rxjs/Subscription';
 
@@ -12,7 +12,8 @@ import { Subscription } from 'rxjs/Subscription';
   }
 })
 export class BoxComponent implements OnInit {
-  @Output() overSwitcher = new EventEmitter<boolean>();
+  @Output() ladderSwitcher = new EventEmitter<boolean>();
+  @Input() topScore: boolean;
   rows = [];
   columns = [];
   sharedList = [];
@@ -21,7 +22,6 @@ export class BoxComponent implements OnInit {
   compactionList = [];
   animationDone = true;
   over = false;
-  topScore = false;
   restartStreamSubs: Subscription;
   loadSub: Subscription;
   constructor(
@@ -33,8 +33,8 @@ export class BoxComponent implements OnInit {
     this.loadSub = this.swipeService.loadProgressStream$.subscribe((res)=>{
       this.sharedList = res;
       this._lossCheck(this.sharedList);
+      // setTimeout(()=>{this.ladderSwitcher.emit(true)},0);
     });
-    setTimeout(()=>{this.overSwitcher.emit(true)},0);
   }
   ngOnDestroy(): void{
     this.restartStreamSubs.unsubscribe();
@@ -63,7 +63,7 @@ export class BoxComponent implements OnInit {
   restart(): void{
     if(!this.topScore){
       this.over = false;
-      this.overSwitcher.emit(this.over);
+      this.ladderSwitcher.emit(this.over);
       this.rows = [];
       this.columns = [];
       this.sharedList = [];
@@ -113,7 +113,7 @@ export class BoxComponent implements OnInit {
   _lossCheck(array: Array<number>): void{
     if(array.filter(elem => elem == null).length == 0) {
       this.over = this.swipeService.optionCheck(array);
-      this.overSwitcher.emit(this.over);
+      this.ladderSwitcher.emit(this.over);
     }
   }
 }

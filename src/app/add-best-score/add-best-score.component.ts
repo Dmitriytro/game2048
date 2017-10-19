@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Player } from '../player';
 import { PlayerService } from "../player.service";
 
@@ -8,13 +8,26 @@ import { PlayerService } from "../player.service";
   styleUrls: ['./add-best-score.component.css']
 })
 export class AddBestScoreComponent implements OnInit {
-  // @Input() playerScore: number;
-  // player: Player = { name: ``, score: this.playerScore, lastPosition: []};
+  @Output() playerSaved = new EventEmitter<boolean>();
   constructor(private playerService: PlayerService) { }
-
-  ngOnInit() {}
-  addBestScore(player): void{
-    this.playerService.savePlayer(player)
-      .subscribe((res) => console.log('player saved'));
+  player: Player = new Player;
+  ngOnInit() {
+    this.playerService.getPlayer(this._getCookie('userId'))
+      .subscribe(res => {
+        this.player = res;
+        if(this.player.name == this.player._id) this.player.name = '';
+      });
+  }
+  addPlayerName(): void{
+    if(this.player){
+      this.playerService.saveProgress(this.player)
+        .subscribe((res) => this.playerSaved.emit(true));
+    }
+  }
+  _getCookie(name: string): any{
+    let matches = document.cookie.match(new RegExp(
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
   }
 }
