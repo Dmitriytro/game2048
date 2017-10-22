@@ -4,7 +4,7 @@ import { trigger, state, animate, style, transition } from '@angular/animations'
 @Component({
   selector: 'app-spot',
   templateUrl: './spot.component.html',
-  styleUrls: ['./spot.component.css'],
+  styleUrls: ['./spot.component.sass'],
   animations: [
     trigger('movementtrigger',[
       state('null',style({transform: 'translateX(0px)'})),

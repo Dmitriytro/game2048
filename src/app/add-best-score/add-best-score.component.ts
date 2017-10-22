@@ -5,7 +5,7 @@ import { PlayerService } from "../player.service";
 @Component({
   selector: 'app-add-best-score',
   templateUrl: './add-best-score.component.html',
-  styleUrls: ['./add-best-score.component.css']
+  styleUrls: ['./add-best-score.component.sass']
 })
 export class AddBestScoreComponent implements OnInit {
   @Output() playerSaved = new EventEmitter<boolean>();

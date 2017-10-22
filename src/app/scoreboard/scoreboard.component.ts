@@ -6,7 +6,7 @@ import { Player } from '../player';
 @Component({
   selector: 'app-scoreboard',
   templateUrl: './scoreboard.component.html',
-  styleUrls: ['./scoreboard.component.css']
+  styleUrls: ['./scoreboard.component.sass']
 })
 
 export class ScoreboardComponent implements OnInit {

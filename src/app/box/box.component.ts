@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-box',
   templateUrl: './box.component.html',
-  styleUrls: ['./box.component.css'],
+  styleUrls: ['./box.component.sass'],
   host: {
     '(document:keyup)': '_keyup($event)',
     '(document:keydown)': '_keydown($event)',

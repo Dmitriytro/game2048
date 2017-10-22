@@ -1,8 +1,9 @@
 <div class="wrapper">
   <div class="scene">
+    <app-tutorial-module *ngIf="modal" (close)="_closeModal()"></app-tutorial-module>
     <content class="content">
       <div class="content-top">
-        <app-score (recordSwitcher)="recordSwitch($event)"></app-score>
+        <app-score (recordSwitcher)="recordSwitch($event)" (modal)="modalPop()"></app-score>
       </div>
       <div class="content-ladder"  [@popOverState]="stateName" (@popOverState.done)="nextAnimation($event)" >
         <app-scoreboard *ngIf="over && !topScore"></app-scoreboard>

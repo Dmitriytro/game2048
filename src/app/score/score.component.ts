@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { SwipeService } from "../swipe.service";
 import { Subscription } from 'rxjs/Subscription';
 import { PlayerService } from "../player.service";
@@ -6,10 +6,11 @@ import { PlayerService } from "../player.service";
 @Component({
   selector: 'app-score',
   templateUrl: './score.component.html',
-  styleUrls: ['./score.component.css']
+  styleUrls: ['./score.component.sass']
 })
 export class ScoreComponent implements OnInit {
   @Output() recordSwitcher = new EventEmitter<boolean>();
+  @Output() modal = new EventEmitter<boolean>();
   score: number = 0;
   bestScore: number = 0;
   newRecord: boolean = false;
@@ -56,7 +57,10 @@ export class ScoreComponent implements OnInit {
         }
       }
     });
-    this.zerScoreSubs = this.swipeService.zeroingOuter$.subscribe(zero => this.score = zero);
+    this.zerScoreSubs = this.swipeService.zeroingOuter$.subscribe(zero => {
+      this.score = zero;
+      this.newRecord = false;
+    });
     if(this.user_id) {
         this.playerService.getPlayer(this.user_id)
           .subscribe(res => {
@@ -65,7 +69,7 @@ export class ScoreComponent implements OnInit {
             this.user_id = res._id;
             this.loadProgress(res.lastPosition);
           });
-    }
+    } else setTimeout(()=>{this.modal.emit(true)},0)
   }
   ngOnDestroy(): void{
     this.zerScoreSubs.unsubscribe();

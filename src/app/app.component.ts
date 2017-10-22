@@ -4,17 +4,17 @@ import { trigger, state, animate, style, transition } from '@angular/animations'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.sass'],
   animations: [
     trigger('popOverState', [
       state('show', style({
         maxHeight: 600
       })),
-      state('hide',   style({
+      state('hide', style({
         maxHeight: 0
       })),
-      transition('show => hide', animate('1000ms ease-out')),
-      transition('hide => show', animate('1000ms 500ms ease-in'))
+      transition('show => hide', animate('600ms ease-out')),
+      transition('hide => show', animate('600ms 500ms ease-in'))
     ])
   ]
 })
@@ -22,39 +22,52 @@ export class AppComponent {
   over: boolean = false;
   topScore: boolean = false;
   toggle: boolean = false;
+  modal: boolean = false;
 
+  _closeModal(): void{
+    this.modal = false;
+  }
+  modalPop(): void{
+    this.modal = true;
+  }
   get stateName(): string{
     return this.toggle ? 'show' : 'hide'
   }
   nextAnimation($event): void{
-    // if($event.toState == `hide` && this.toggle == false) {
-    //   console.log($event);
-    //   this.topScore = false;
-    //   this.toggle = true
-    // }
+    if($event.toState == `hide` && $event.fromState != `void`) {
+      if (this.topScore) {
+        this.topScore = false;
+        setTimeout(()=>{this._boardShow()},0)
+      }
+      else this.over = false;
+    }
   }
   overSwitch($event): void{
-    this.over = $event;
-    this.toggle = $event;
-    console.log(this.toggle);
+    if($event && this.topScore){
+      this._submitShow();
+    } else if($event && !this.topScore){
+      this._boardShow();
+    } else {
+      this._boardHide();
+    }
   }
   recordSwitch($event): void{
-    if(!$event) {
-      this.toggle = $event;
-      setTimeout(()=>{
-        this.topScore = false;
-        this.toggle = true
-      },1000)
-    }
-    else {
-      this.topScore = $event;
-    }
+    if(this.over && !$event){
+      this._submitHide();
+    } else this.topScore = $event;
   }
-  /*
-  1 игра все выключено, потом включается topScore
-  2 проигрыш, включается over и toggle
-  (открывается первое окно с сабмитом)
-  3 сабмит, через эмит отключение рекорда, toggle срабатывает и схлопывает все,
-  по завершщению онимации topScore отключается и следом опять происходит тогл toggle
-   */
+  _submitShow(): void {
+    this.over = true;
+    this.toggle = true;
+  }
+  _boardShow(): void {
+    this.over = true;
+    this.toggle = true;
+  }
+  _submitHide(): void {
+    this.toggle = false;
+  }
+  _boardHide(): void {
+    this.toggle = false;
+  }
 }
