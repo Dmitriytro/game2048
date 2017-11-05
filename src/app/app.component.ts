@@ -23,12 +23,15 @@ export class AppComponent {
   topScore: boolean = false;
   toggle: boolean = false;
   modal: boolean = false;
+  hint: boolean = false;
 
   _closeModal(): void{
     this.modal = false;
+    this.hint = false;
   }
   modalPop(): void{
     this.modal = true;
+    this.hint = true;
   }
   get stateName(): string{
     return this.toggle ? 'show' : 'hide'

@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class BoxComponent implements OnInit {
   @Output() ladderSwitcher = new EventEmitter<boolean>();
   @Input() topScore: boolean;
+  @Input() hint: boolean = false;
   rows = [];
   columns = [];
   sharedList = [];
@@ -76,7 +77,7 @@ export class BoxComponent implements OnInit {
     }
   }
   _keyup(e): void{
-    if(e.code.indexOf('Arrow')>=0 && this.animationDone && !this.over) {
+    if(e.code.indexOf('Arrow')>=0 && this.animationDone && !this.over && !this.hint) {
       let result = [];
       this.animationDone = !this.animationDone;
       if(e.code == 'ArrowRight') result = this.swipeService.swipeRight(this.sharedList);

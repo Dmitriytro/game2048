@@ -32,7 +32,7 @@ export class ScoreComponent implements OnInit {
     }
     else if(this.user_id) {
       this.playerService.saveProgress({_id: this.user_id, name: this.user_id, score: this.score ,bestScore: this.bestScore ,lastPosition: this.position})
-        .subscribe(res => console.log('saved'));
+        .subscribe(res => {});
     }
     else
       this.playerService.savePlayer({name: '', score: this.score , bestScore: this.score ,lastPosition: this.position})

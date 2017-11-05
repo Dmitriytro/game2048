@@ -8,9 +8,10 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class TutorialModuleComponent{
 
   @Output() close = new EventEmitter<boolean>();
-  constructor() {
-  }
+  constructor() {}
+  ngOnInit(): void{
 
+  }
   closeModal(){
     this.close.emit(false);
   }
