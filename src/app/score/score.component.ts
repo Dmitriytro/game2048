@@ -31,7 +31,7 @@ export class ScoreComponent implements OnInit {
       alert( 'Enable cookies to work with this site' );
     }
     else if(this.user_id) {
-      this.playerService.saveProgress({_id: this.user_id, name: this.user_id, score: this.score ,bestScore: this.bestScore ,lastPosition: this.position})
+      this.playerService.saveProgress({_id: this.user_id, score: this.score ,bestScore: this.bestScore ,lastPosition: this.position})
         .subscribe(res => {});
     }
     else
