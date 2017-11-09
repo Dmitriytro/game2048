@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class PlayerService {
-  serverApi= 'http://localhost:3000';
+  serverApi= 'http://138.197.210.245:80';
   constructor(private http: Http) {}
   getPlayers(): Observable<any> {
     let URI = `${this.serverApi}/scoreboard/`;
