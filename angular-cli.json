@@ -5,7 +5,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "../game2048_server/public",
+      "outDir": "../game2048_build",
       "assets": [
         "assets",
         "favicon.ico"
