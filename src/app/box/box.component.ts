@@ -62,7 +62,7 @@ export class BoxComponent implements OnInit {
     });
   }
   restart(): void{
-    if(!this.topScore){
+    // if(!this.topScore){
       this.over = false;
       this.ladderSwitcher.emit(this.over);
       this.rows = [];
@@ -74,7 +74,7 @@ export class BoxComponent implements OnInit {
       this.start();
       this.swipeService.restartScore();
       this.swipeService.sendProgress(this.sharedList);
-    }
+    // }
   }
   _keyup(e): void{
     if(e.code.indexOf('Arrow')>=0 && this.animationDone && !this.over && !this.hint) {

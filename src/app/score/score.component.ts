@@ -35,7 +35,7 @@ export class ScoreComponent implements OnInit {
         .subscribe(res => {});
     }
     else
-      this.playerService.savePlayer({name: '', score: this.score , bestScore: this.score ,lastPosition: this.position})
+      this.playerService.savePlayer({name: 'player', score: this.score , bestScore: this.score ,lastPosition: this.position})
         .subscribe(res => document.cookie = `userId=${res._id}`);
   }
   loadProgress(lastPosition: Array<number>): void{
